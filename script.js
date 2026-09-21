@@ -3,6 +3,7 @@ var videoAspects = {};
 
 // ── Gallery data ──────────────────────────────────────────────
 var G = {
+  'employee-arrival-app': {p:'assets/projects/employee-arrival-app/',f:['01-employee-arrival-app-overview.png','02-employee-check-in-experience.png','03-location-aware-check-in-radar.png','04-admin-dashboard-overview.png','05-attendance-exceptions-review.png','06-branches-schedules-workflow.png']},
   'rs-brand':     {p:'assets/projects/design/royal-smells/brand/',f:['royal-smells-armani-code-perfume-bottle.jpg','royal-smells-aroma-oil-collection-flat-lay.jpg','royal-smells-cute-reed-spray-collage.jpg','royal-smells-la-panthere-perfume-guide.jpg','royal-smells-mr-scandal-perfume-bottle.jpg','royal-smells-room-fragrance-sprays-collection.jpg','royal-smells-wild-berries-room-spray.jpg','img-010.jpg']},
   'rs-edited':    {p:'assets/projects/design/royal-smells/edited/',f:['1-edited.jpg','2-edited.jpg','3-edited.jpg','4-edited.jpg','5-edited.jpg','6-edited.jpg','cover-edited.jpg','cta-edited.jpg']},
   'rs-candy':     {p:'assets/projects/design/royal-smells/candy/',f:['gemini-generated-image-3ltgjf3ltgjf3ltg-eid.jpg','gemini-generated-image-6ejk016ejk016ejk-eid.jpg','gemini-generated-image-cyj254cyj254cyj2-eid.jpg','gemini-generated-image-l38mhul38mhul38m-eid.jpg','gemini-generated-image-lsxd4llsxd4llsxd-eid.jpg','gemini-generated-image-spucadspucadspuc-eid.jpg','gemini-generated-image-wiv7tgwiv7tgwiv7-eid.jpg']},
