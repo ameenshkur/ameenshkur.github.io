@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg"/>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="init.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20260711-card-icon-2"/>
+  <link rel="stylesheet" href="styles.css?v=20260922-video-thumbnails-2"/>
 </head>
 <body>
 
@@ -222,6 +222,101 @@
     <div class="portfolio-grid">
 
       <!-- ══ DESIGN — IMAGE GALLERIES ══ -->
+
+      <div class="proj-card reveal" data-cat="design">
+        <div class="proj-thumb" onclick="lb.openGallery('baghe-singles')">
+          <img src="assets/projects/design/baghe-khatina/urban-care/singles/purple-anti-brassiness.webp" alt="Baghe Khatina and partner brand single-image work" loading="lazy" decoding="async"/>
+          <span class="gallery-badge"><i data-lucide="images" style="width:12px;height:12px"></i><span class="gallery-badge-text">Images</span></span>
+        </div>
+        <div class="proj-body">
+          <span class="proj-tag">Design</span>
+          <div class="proj-title">Baghe Khatina — Single Image Work</div>
+          <div class="proj-desc">Single-image campaign visuals across hair-care, beauty, event, and summer-care work for Baghe Khatina and partner brands.</div>
+        </div>
+      </div>
+
+      <details class="proj-card campaign-card reveal" data-cat="design">
+        <summary>
+          <div class="proj-thumb" onclick="event.preventDefault(); event.stopPropagation(); lb.openGallery('baghe-carousels')">
+            <img src="assets/projects/design/baghe-khatina/urban-care/carousels/glycolic-retinol/01-cover.webp" alt="Baghe Khatina Urban Care carousel campaigns" loading="lazy" decoding="async"/>
+            <span class="gallery-badge"><i data-lucide="images" style="width:12px;height:12px"></i><span class="gallery-badge-text">Images</span></span>
+          </div>
+          <div class="proj-body">
+            <div class="campaign-status">
+              <span>Expandable</span>
+              <span>4 image sets</span>
+            </div>
+            <span class="proj-tag">Design</span>
+            <div class="proj-title">Baghe Khatina — Image Sets &amp; Carousels</div>
+            <div class="proj-desc">Four Baghe Khatina Urban Care visual sets grouped together: Glycolic &amp; Retinol, Apple Cider, Pure Coconut &amp; Aloe Vera, and Shake N Repair.</div>
+            <span class="campaign-toggle">
+              <span class="campaign-toggle-show">Show image sets</span>
+              <span class="campaign-toggle-hide">Hide image sets</span>
+              <i data-lucide="chevron-down"></i>
+            </span>
+          </div>
+        </summary>
+        <div class="campaign-list">
+          <button type="button" class="campaign-item-btn" data-preview="assets/projects/design/baghe-khatina/urban-care/carousels/glycolic-retinol/01-cover.webp" data-preview-label="Glycolic and Retinol carousel" onclick="lb.openGallery('baghe-glycolic-retinol')">
+            <span>Urban Care — Glycolic &amp; Retinol Carousel</span>
+            <i data-lucide="images" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview="assets/projects/design/baghe-khatina/urban-care/carousels/apple-cider/01-cover.webp" data-preview-label="Apple Cider carousel" onclick="lb.openGallery('baghe-apple-cider')">
+            <span>Urban Care — Apple Cider Carousel</span>
+            <i data-lucide="images" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview="assets/projects/design/baghe-khatina/urban-care/carousels/coconut-aloe-vera/01-cover.webp" data-preview-label="Coconut and Aloe Vera carousel" onclick="lb.openGallery('baghe-coconut-aloe')">
+            <span>Urban Care — Pure Coconut &amp; Aloe Vera Carousel</span>
+            <i data-lucide="images" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview="assets/projects/design/baghe-khatina/urban-care/carousels/shake-n-repair/01-cover.webp" data-preview-label="Shake N Repair carousel" onclick="lb.openGallery('baghe-shake-repair')">
+            <span>Urban Care — Shake N Repair Carousel</span>
+            <i data-lucide="images" style="width:16px;height:16px"></i>
+          </button>
+        </div>
+      </details>
+
+      <details class="proj-card campaign-card reveal" data-cat="design">
+        <summary>
+          <div class="proj-vid-thumb" data-vid-id="1229155440" onclick="event.preventDefault(); event.stopPropagation(); lb.openVideo('1229155440')">
+            <img class="video-poster" src="assets/projects/videos/handa-collage-cover.webp" alt="Handa Collage video cover" loading="lazy" decoding="async"/>
+            <div class="play-btn"><i data-lucide="play-circle" style="width:24px;height:24px"></i></div>
+            <span class="vid-label">Vimeo</span>
+          </div>
+          <div class="proj-body">
+            <div class="campaign-status">
+              <span data-i18n="campaign_expandable_label">Expandable</span>
+              <span>4 videos</span>
+            </div>
+            <span class="proj-tag">Design</span>
+            <div class="proj-title">Selected Video Work</div>
+            <div class="proj-desc">Four selected short-form videos grouped together and hosted on Vimeo, covering commercial, beauty, motion, and creative video work.</div>
+            <span class="campaign-toggle">
+              <span data-i18n="campaign_show_videos">Show videos</span>
+              <span data-i18n="campaign_hide_videos">Hide videos</span>
+              <i data-lucide="chevron-down"></i>
+            </span>
+          </div>
+        </summary>
+        <div class="campaign-list">
+          <button type="button" class="campaign-item-btn" data-preview-video-id="1229155438" data-preview-label="Flormar store launch" onclick="lb.openVideo('1229155438')">
+            <span>Flormar — Store Launch Promo</span>
+            <i data-lucide="play" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview-video-id="1229155439" data-preview-label="Spiderman video" onclick="lb.openVideo('1229155439')">
+            <span>Spider-Man — Creative Motion Study</span>
+            <i data-lucide="play" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview="assets/projects/videos/handa-collage-cover.webp" data-preview-video-id="1229155440" data-preview-label="Handa Collage" onclick="lb.openVideo('1229155440')">
+            <span>Handa — Beauty Collage Campaign</span>
+            <i data-lucide="play" style="width:16px;height:16px"></i>
+          </button>
+          <button type="button" class="campaign-item-btn" data-preview-video-id="1229155441" data-preview-label="Cinematic AI concept" onclick="lb.openVideo('1229155441')">
+            <span>Cinematic AI Concept</span>
+            <i data-lucide="play" style="width:16px;height:16px"></i>
+          </button>
+        </div>
+      </details>
 
       <div class="proj-card reveal" data-cat="design">
         <div class="proj-thumb" onclick="lb.openGallery('rs-brand')">
@@ -743,7 +838,7 @@
 </div>
 
 <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
-<script src="script.js?v=20260921-webp"></script>
+<script src="script.js?v=20260922-baghe-vimeo-thumb"></script>
 
 </body>
 </html>
