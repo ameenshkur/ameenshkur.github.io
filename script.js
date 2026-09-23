@@ -1187,6 +1187,219 @@ document.addEventListener('DOMContentLoaded', function () {
   loadLang(currentLang);
 });
 
+// ── Shareable portfolio cards ────────────────────────────────
+(function () {
+  function makeCardSlug(card, index) {
+    var title = card.querySelector('.featured-title, .proj-title');
+    var source = title && (title.getAttribute('data-i18n') || title.textContent) || 'project-' + index;
+    var slug = source.toLowerCase();
+    if (slug.normalize) slug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    slug = slug.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'project-' + index;
+    return 'share-' + slug;
+  }
+
+  function initPortfolioCardSharing() {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.featured-card, #portfolio .proj-card'));
+    if (!cards.length) return;
+
+    var sharedRoute = document.createElement('main');
+    sharedRoute.className = 'shared-project-route';
+    sharedRoute.hidden = true;
+    sharedRoute.setAttribute('aria-labelledby', 'shared-view-title');
+    sharedRoute.innerHTML = '<div class="shared-project-scroll"><div class="shared-view-stage"></div></div>';
+    document.body.appendChild(sharedRoute);
+    var sharedStage = sharedRoute.querySelector('.shared-view-stage');
+    var sharedIntro = document.createElement('div');
+    sharedIntro.className = 'shared-project-intro';
+    var activeCard = null;
+    var cardPlaceholder = null;
+
+    function restoreSharedCard() {
+      if (activeCard && cardPlaceholder && cardPlaceholder.parentNode) {
+        cardPlaceholder.parentNode.replaceChild(activeCard, cardPlaceholder);
+      }
+      if (activeCard) activeCard.classList.remove('is-shared-target');
+      activeCard = null;
+      cardPlaceholder = null;
+    }
+
+    function returnToPortfolio() {
+      var portfolio = document.getElementById('portfolio');
+      history.replaceState(history.state, '', window.location.pathname + window.location.search + '#portfolio');
+      sharedRoute.hidden = true;
+      restoreSharedCard();
+      window.setTimeout(function () {
+        if (portfolio) portfolio.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      }, 30);
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape' || sharedRoute.hidden) return;
+      var lightbox = document.getElementById('lb-modal');
+      var languagePanel = document.getElementById('lang-panel');
+      var menuButton = document.getElementById('nav-hamburger');
+      if ((lightbox && lightbox.classList.contains('open')) || (languagePanel && languagePanel.classList.contains('open')) || (menuButton && menuButton.getAttribute('aria-expanded') === 'true')) return;
+      returnToPortfolio();
+    }, true);
+
+    var slugCounts = Object.create(null);
+    var toast = document.createElement('div');
+    toast.className = 'card-share-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.innerHTML = '<i data-lucide="check" aria-hidden="true"></i><span data-i18n="share_link_copied">Link copied. Send it to anyone.</span>';
+    document.body.appendChild(toast);
+    var toastTimer = 0;
+
+    function showCopiedToast() {
+      var label = toast.querySelector('[data-i18n="share_link_copied"]');
+      if (label) label.textContent = translations.share_link_copied || 'Link copied. Send it to anyone.';
+      toast.classList.add('is-visible');
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(function () { toast.classList.remove('is-visible'); }, 3000);
+    }
+
+    function copyLink(url) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showCopiedToast).catch(function () {
+          window.prompt(translations.share_copy_prompt || 'Copy this link:', url);
+        });
+      } else {
+        window.prompt(translations.share_copy_prompt || 'Copy this link:', url);
+      }
+    }
+
+    cards.forEach(function (card, index) {
+      var baseId = makeCardSlug(card, index + 1);
+      slugCounts[baseId] = (slugCounts[baseId] || 0) + 1;
+      var id = baseId + (slugCounts[baseId] > 1 ? '-' + slugCounts[baseId] : '');
+      card.id = id;
+      card.classList.add('shareable-card');
+
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'card-share-btn';
+      button.setAttribute('data-i18n-aria-label', 'share_card_aria');
+      button.setAttribute('aria-label', translations.share_card_aria || 'Share this project');
+      button.innerHTML = '<i data-lucide="share-2" aria-hidden="true"></i><span data-i18n="share_card_label">Share</span>';
+      (card.querySelector('.proj-thumb, .proj-vid-thumb') || card).appendChild(button);
+
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var url = new URL(window.location.href);
+        url.hash = id;
+        var titleNode = card.querySelector('.featured-title, .proj-title');
+        var title = titleNode ? titleNode.textContent.trim() : 'Ameen Zangana — Portfolio';
+
+        if (navigator.share) {
+          navigator.share({ title: title, text: title + ' — Ameen Zangana portfolio', url: url.href }).catch(function (error) {
+            if (!error || error.name !== 'AbortError') copyLink(url.href);
+          });
+        } else {
+          copyLink(url.href);
+        }
+      });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    function highlightSharedCard() {
+      var cardId;
+      try { cardId = decodeURIComponent(window.location.hash.slice(1)); }
+      catch (error) { return; }
+      var card = document.getElementById(cardId);
+      if (!card || !card.classList.contains('shareable-card')) return;
+      if (activeCard === card && !sharedRoute.hidden) return;
+      if (activeCard) restoreSharedCard();
+      sharedStage.innerHTML = '';
+      sharedIntro.innerHTML = '';
+
+      var category = card.querySelector('.featured-meta, .proj-tag');
+      var sourceTitle = card.querySelector('.featured-title, .proj-title');
+      var sourceDescription = card.querySelector('.featured-desc, .proj-desc');
+      if (category) {
+        var categoryClone = category.cloneNode(true);
+        categoryClone.className = 'shared-project-category';
+        categoryClone.removeAttribute('id');
+        sharedIntro.appendChild(categoryClone);
+      }
+      var heading = document.createElement('h1');
+      heading.className = 'shared-project-title';
+      heading.id = 'shared-view-title';
+      if (sourceTitle) {
+        Array.prototype.slice.call(sourceTitle.attributes).forEach(function (attribute) {
+          if (attribute.name.indexOf('data-') === 0) heading.setAttribute(attribute.name, attribute.value);
+        });
+        heading.innerHTML = sourceTitle.innerHTML;
+      } else {
+        heading.textContent = 'Selected project';
+      }
+      var backLink = document.createElement('a');
+      backLink.className = 'shared-route-back';
+      backLink.href = '#portfolio';
+      backLink.setAttribute('data-i18n', 'shared_card_browse');
+      backLink.textContent = translations.shared_card_browse || 'Explore the full portfolio';
+      sharedIntro.insertBefore(backLink, sharedIntro.firstChild);
+      heading.id = 'shared-view-title';
+      sharedIntro.appendChild(heading);
+      if (sourceDescription) {
+        var description = document.createElement('p');
+        description.className = 'shared-project-description';
+        Array.prototype.slice.call(sourceDescription.attributes).forEach(function (attribute) {
+          if (attribute.name.indexOf('data-') === 0) description.setAttribute(attribute.name, attribute.value);
+        });
+        description.innerHTML = sourceDescription.innerHTML;
+        sharedIntro.appendChild(description);
+      }
+      sharedStage.appendChild(sharedIntro);
+
+      cardPlaceholder = document.createComment('shared-project-card');
+      card.parentNode.insertBefore(cardPlaceholder, card);
+      sharedStage.appendChild(card);
+      activeCard = card;
+      card.classList.add('is-shared-target');
+      card.classList.add('visible');
+      sharedRoute.hidden = false;
+      var cardIndex = cards.indexOf(card);
+      var projectNav = document.createElement('nav');
+      projectNav.className = 'shared-project-pagination';
+      projectNav.setAttribute('data-i18n-aria-label', 'share_project_navigation_aria');
+      projectNav.setAttribute('aria-label', translations.share_project_navigation_aria || 'Browse portfolio projects');
+      [-1, 1].forEach(function (direction) {
+        var neighbor = cards[cardIndex + direction];
+        if (!neighbor) return;
+        var neighborTitle = neighbor.querySelector('.featured-title, .proj-title');
+        var link = document.createElement('a');
+        link.className = 'shared-project-page-link' + (direction > 0 ? ' is-next' : '');
+        link.href = '#' + neighbor.id;
+        var label = document.createElement('span');
+        label.setAttribute('data-i18n', direction < 0 ? 'share_previous_project' : 'share_next_project');
+        label.textContent = translations[label.getAttribute('data-i18n')] || (direction < 0 ? 'Previous project' : 'Next project');
+        var title = document.createElement('strong');
+        title.textContent = neighborTitle ? neighborTitle.textContent.trim() : 'Portfolio project';
+        link.appendChild(label);
+        link.appendChild(title);
+        projectNav.appendChild(link);
+      });
+      if (projectNav.childNodes.length) sharedStage.appendChild(projectNav);
+      sharedRoute.querySelector('.shared-project-scroll').scrollTop = 0;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    window.addEventListener('hashchange', function () {
+      if (window.location.hash.indexOf('#share-') === 0) highlightSharedCard();
+      else if (!sharedRoute.hidden) {
+        sharedRoute.hidden = true;
+        restoreSharedCard();
+      }
+    });
+    if (window.location.hash) window.setTimeout(highlightSharedCard, 80);
+  }
+
+  document.addEventListener('DOMContentLoaded', initPortfolioCardSharing);
+}());
+
 // ── Active navigation section ─────────────────────────────────
 (function () {
   document.addEventListener('DOMContentLoaded', function () {
