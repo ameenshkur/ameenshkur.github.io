@@ -1187,7 +1187,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadLang(currentLang);
 });
 
-// ── Shareable portfolio cards ────────────────────────────────
+// ── Shareable portfolio projects ─────────────────────────────
 (function () {
   function makeCardSlug(card, index) {
     var title = card.querySelector('.featured-title, .proj-title');
@@ -1198,49 +1198,173 @@ document.addEventListener('DOMContentLoaded', function () {
     return 'share-' + slug;
   }
 
+  function actionValue(node, action) {
+    var code = node.getAttribute('onclick') || '';
+    var match = code.match(action === 'gallery' ? /openGallery\(['"]([^'"]+)['"]/ : /openVideo\(['"]([^'"]+)['"]/);
+    return match ? match[1] : '';
+  }
+
+  function textFrom(source, tag, className) {
+    var element = document.createElement(tag);
+    element.className = className;
+    if (source) {
+      ['data-i18n', 'data-i18n-html'].forEach(function (name) {
+        if (source.hasAttribute(name)) element.setAttribute(name, source.getAttribute(name));
+      });
+      element.innerHTML = source.innerHTML;
+    }
+    return element;
+  }
+
+  function cardMedia(card) {
+    var grouped = Array.prototype.slice.call(card.querySelectorAll('.campaign-item-btn')).map(function (button) {
+      var key = actionValue(button, 'gallery');
+      var id = button.dataset.previewVideoId || actionValue(button, 'video');
+      if (key && G[key]) return { type: 'images', key: key, label: button.querySelector('span') };
+      if (id) return { type: 'video', id: id, label: button.querySelector('span') };
+      return null;
+    }).filter(Boolean);
+    if (grouped.length) return grouped;
+
+    var candidates = [card].concat(Array.prototype.slice.call(card.querySelectorAll('[onclick]')));
+    for (var i = 0; i < candidates.length; i++) {
+      var galleryKey = actionValue(candidates[i], 'gallery');
+      if (galleryKey && G[galleryKey]) return [{ type: 'images', key: galleryKey }];
+      var videoId = actionValue(candidates[i], 'video');
+      if (videoId) return [{ type: 'video', id: videoId }];
+    }
+    var videoThumb = card.querySelector('.proj-vid-thumb[data-vid-id]');
+    if (videoThumb) return [{ type: 'video', id: videoThumb.dataset.vidId }];
+    var image = card.querySelector('.proj-thumb img');
+    return image ? [{ type: 'image', src: image.getAttribute('src') }] : [];
+  }
+
   function initPortfolioCardSharing() {
     var cards = Array.prototype.slice.call(document.querySelectorAll('.featured-card, #portfolio .proj-card'));
     if (!cards.length) return;
 
-    var sharedRoute = document.createElement('main');
-    sharedRoute.className = 'shared-project-route';
-    sharedRoute.hidden = true;
-    sharedRoute.setAttribute('aria-labelledby', 'shared-view-title');
-    sharedRoute.innerHTML = '<div class="shared-project-scroll"><div class="shared-view-stage"></div></div>';
-    document.body.appendChild(sharedRoute);
-    var sharedStage = sharedRoute.querySelector('.shared-view-stage');
-    var sharedIntro = document.createElement('div');
-    sharedIntro.className = 'shared-project-intro';
-    var activeCard = null;
-    var cardPlaceholder = null;
+    var originalTitle = document.title;
+    var page = document.createElement('main');
+    page.className = 'shared-project-page';
+    page.hidden = true;
+    page.setAttribute('aria-labelledby', 'shared-project-title');
+    page.innerHTML = '<header class="shared-page-header"><div class="shared-page-header-inner"><span class="shared-page-brand">Ameen Zangana</span><a class="shared-page-cta" href="#portfolio" data-i18n="shared_card_browse">Go to portfolio</a></div></header><div class="shared-page-scroll"><article class="shared-page-content"><div class="shared-page-intro"></div><div class="shared-page-media"></div></article></div>';
+    document.body.appendChild(page);
+    var intro = page.querySelector('.shared-page-intro');
+    var media = page.querySelector('.shared-page-media');
+    var backgroundNodes = Array.prototype.slice.call(document.body.children).filter(function (node) {
+      return node !== page;
+    });
+    var originalInert = backgroundNodes.map(function (node) { return node.inert; });
 
-    function restoreSharedCard() {
-      if (activeCard && cardPlaceholder && cardPlaceholder.parentNode) {
-        cardPlaceholder.parentNode.replaceChild(activeCard, cardPlaceholder);
+    function setBackgroundInert(shouldBeInert) {
+      backgroundNodes.forEach(function (node, index) {
+        node.inert = shouldBeInert ? true : originalInert[index];
+      });
+    }
+
+    page.querySelector('.shared-page-cta').addEventListener('click', function () {
+      closeSharedPage();
+    });
+
+    function closeSharedPage() {
+      page.hidden = true;
+      document.body.classList.remove('share-page-open');
+      document.title = originalTitle;
+      media.replaceChildren();
+      setBackgroundInert(false);
+    }
+
+    function imageGroup(item, projectTitle, grouped) {
+      var gallery = item.type === 'images' ? G[item.key] : null;
+      var files = gallery ? gallery.f.map(function (file) { return gallery.p + file; }) : [item.src];
+      var group = document.createElement('section');
+      group.className = 'shared-media-group';
+      if (grouped && item.label) group.appendChild(textFrom(item.label, 'h2', 'shared-media-title'));
+
+      var grid = document.createElement('div');
+      var isProgramming = gallery && (gallery.p.indexOf('/dev/') !== -1 || item.key === 'employee-arrival-app');
+      grid.className = 'shared-image-grid' + (isProgramming ? ' is-programming' : '');
+      files.forEach(function (src, index) {
+        var figure = document.createElement('figure');
+        figure.className = 'shared-image-frame';
+        var img = document.createElement('img');
+        img.src = src;
+        img.alt = projectTitle + ' — image ' + (index + 1);
+        img.loading = index === 0 ? 'eager' : 'lazy';
+        img.decoding = 'async';
+        figure.appendChild(img);
+        grid.appendChild(figure);
+      });
+      group.appendChild(grid);
+      return group;
+    }
+
+    function videoGroup(item, projectTitle, grouped) {
+      var group = document.createElement('section');
+      group.className = 'shared-media-group';
+      if (grouped && item.label) group.appendChild(textFrom(item.label, 'h2', 'shared-media-title'));
+
+      var frame = document.createElement('div');
+      frame.className = 'shared-video-frame';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://player.vimeo.com/video/' + item.id + '?title=0&byline=0&portrait=0';
+      iframe.title = item.label ? item.label.textContent.trim() : projectTitle;
+      iframe.loading = 'lazy';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.allowFullscreen = true;
+      frame.appendChild(iframe);
+      group.appendChild(frame);
+
+      function setAspect(size) {
+        if (!size || !size.w || !size.h) return;
+        frame.style.aspectRatio = size.w + ' / ' + size.h;
+        frame.classList.toggle('is-portrait', size.h > size.w);
       }
-      if (activeCard) activeCard.classList.remove('is-shared-target');
-      activeCard = null;
-      cardPlaceholder = null;
+      if (videoAspects[item.id]) setAspect(videoAspects[item.id]);
+      else {
+        fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + item.id)
+          .then(function (response) { return response.json(); })
+          .then(function (data) {
+            if (data && data.width && data.height) setAspect({ w: data.width, h: data.height });
+          })
+          .catch(function () {});
+      }
+      return group;
     }
 
-    function returnToPortfolio() {
-      var portfolio = document.getElementById('portfolio');
-      history.replaceState(history.state, '', window.location.pathname + window.location.search + '#portfolio');
-      sharedRoute.hidden = true;
-      restoreSharedCard();
-      window.setTimeout(function () {
-        if (portfolio) portfolio.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-      }, 30);
-    }
+    function showSharedPage() {
+      var id;
+      try { id = decodeURIComponent(window.location.hash.slice(1)); }
+      catch (error) { closeSharedPage(); return; }
+      var card = document.getElementById(id);
+      if (!card || !card.classList.contains('shareable-card')) {
+        closeSharedPage();
+        return;
+      }
 
-    document.addEventListener('keydown', function (event) {
-      if (event.key !== 'Escape' || sharedRoute.hidden) return;
-      var lightbox = document.getElementById('lb-modal');
-      var languagePanel = document.getElementById('lang-panel');
-      var menuButton = document.getElementById('nav-hamburger');
-      if ((lightbox && lightbox.classList.contains('open')) || (languagePanel && languagePanel.classList.contains('open')) || (menuButton && menuButton.getAttribute('aria-expanded') === 'true')) return;
-      returnToPortfolio();
-    }, true);
+      intro.replaceChildren();
+      media.replaceChildren();
+      var category = card.querySelector('.featured-meta, .proj-tag');
+      var title = card.querySelector('.featured-title, .proj-title');
+      var description = card.querySelector('.featured-desc, .proj-desc');
+      if (category) intro.appendChild(textFrom(category, 'p', 'shared-page-category'));
+      var heading = textFrom(title, 'h1', 'shared-page-title');
+      heading.id = 'shared-project-title';
+      intro.appendChild(heading);
+      if (description) intro.appendChild(textFrom(description, 'p', 'shared-page-description'));
+
+      var projectTitle = title ? title.textContent.trim() : 'Portfolio project';
+      var items = cardMedia(card);
+      items.forEach(function (item) {
+        media.appendChild(item.type === 'video' ? videoGroup(item, projectTitle, items.length > 1) : imageGroup(item, projectTitle, items.length > 1));
+      });
+      document.title = projectTitle + ' — Ameen Zangana';
+      page.hidden = false;
+      document.body.classList.add('share-page-open');
+      setBackgroundInert(true);
+      page.querySelector('.shared-page-scroll').scrollTop = 0;
+    }
 
     var slugCounts = Object.create(null);
     var toast = document.createElement('div');
@@ -1272,8 +1396,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cards.forEach(function (card, index) {
       var baseId = makeCardSlug(card, index + 1);
       slugCounts[baseId] = (slugCounts[baseId] || 0) + 1;
-      var id = baseId + (slugCounts[baseId] > 1 ? '-' + slugCounts[baseId] : '');
-      card.id = id;
+      card.id = baseId + (slugCounts[baseId] > 1 ? '-' + slugCounts[baseId] : '');
       card.classList.add('shareable-card');
 
       var button = document.createElement('button');
@@ -1288,10 +1411,9 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         event.stopPropagation();
         var url = new URL(window.location.href);
-        url.hash = id;
+        url.hash = card.id;
         var titleNode = card.querySelector('.featured-title, .proj-title');
         var title = titleNode ? titleNode.textContent.trim() : 'Ameen Zangana — Portfolio';
-
         if (navigator.share) {
           navigator.share({ title: title, text: title + ' — Ameen Zangana portfolio', url: url.href }).catch(function (error) {
             if (!error || error.name !== 'AbortError') copyLink(url.href);
@@ -1303,98 +1425,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    function highlightSharedCard() {
-      var cardId;
-      try { cardId = decodeURIComponent(window.location.hash.slice(1)); }
-      catch (error) { return; }
-      var card = document.getElementById(cardId);
-      if (!card || !card.classList.contains('shareable-card')) return;
-      if (activeCard === card && !sharedRoute.hidden) return;
-      if (activeCard) restoreSharedCard();
-      sharedStage.innerHTML = '';
-      sharedIntro.innerHTML = '';
-
-      var category = card.querySelector('.featured-meta, .proj-tag');
-      var sourceTitle = card.querySelector('.featured-title, .proj-title');
-      var sourceDescription = card.querySelector('.featured-desc, .proj-desc');
-      if (category) {
-        var categoryClone = category.cloneNode(true);
-        categoryClone.className = 'shared-project-category';
-        categoryClone.removeAttribute('id');
-        sharedIntro.appendChild(categoryClone);
-      }
-      var heading = document.createElement('h1');
-      heading.className = 'shared-project-title';
-      heading.id = 'shared-view-title';
-      if (sourceTitle) {
-        Array.prototype.slice.call(sourceTitle.attributes).forEach(function (attribute) {
-          if (attribute.name.indexOf('data-') === 0) heading.setAttribute(attribute.name, attribute.value);
-        });
-        heading.innerHTML = sourceTitle.innerHTML;
-      } else {
-        heading.textContent = 'Selected project';
-      }
-      var backLink = document.createElement('a');
-      backLink.className = 'shared-route-back';
-      backLink.href = '#portfolio';
-      backLink.setAttribute('data-i18n', 'shared_card_browse');
-      backLink.textContent = translations.shared_card_browse || 'Explore the full portfolio';
-      sharedIntro.insertBefore(backLink, sharedIntro.firstChild);
-      heading.id = 'shared-view-title';
-      sharedIntro.appendChild(heading);
-      if (sourceDescription) {
-        var description = document.createElement('p');
-        description.className = 'shared-project-description';
-        Array.prototype.slice.call(sourceDescription.attributes).forEach(function (attribute) {
-          if (attribute.name.indexOf('data-') === 0) description.setAttribute(attribute.name, attribute.value);
-        });
-        description.innerHTML = sourceDescription.innerHTML;
-        sharedIntro.appendChild(description);
-      }
-      sharedStage.appendChild(sharedIntro);
-
-      cardPlaceholder = document.createComment('shared-project-card');
-      card.parentNode.insertBefore(cardPlaceholder, card);
-      sharedStage.appendChild(card);
-      activeCard = card;
-      card.classList.add('is-shared-target');
-      card.classList.add('visible');
-      sharedRoute.hidden = false;
-      var cardIndex = cards.indexOf(card);
-      var projectNav = document.createElement('nav');
-      projectNav.className = 'shared-project-pagination';
-      projectNav.setAttribute('data-i18n-aria-label', 'share_project_navigation_aria');
-      projectNav.setAttribute('aria-label', translations.share_project_navigation_aria || 'Browse portfolio projects');
-      [-1, 1].forEach(function (direction) {
-        var neighbor = cards[cardIndex + direction];
-        if (!neighbor) return;
-        var neighborTitle = neighbor.querySelector('.featured-title, .proj-title');
-        var link = document.createElement('a');
-        link.className = 'shared-project-page-link' + (direction > 0 ? ' is-next' : '');
-        link.href = '#' + neighbor.id;
-        var label = document.createElement('span');
-        label.setAttribute('data-i18n', direction < 0 ? 'share_previous_project' : 'share_next_project');
-        label.textContent = translations[label.getAttribute('data-i18n')] || (direction < 0 ? 'Previous project' : 'Next project');
-        var title = document.createElement('strong');
-        title.textContent = neighborTitle ? neighborTitle.textContent.trim() : 'Portfolio project';
-        link.appendChild(label);
-        link.appendChild(title);
-        projectNav.appendChild(link);
-      });
-      if (projectNav.childNodes.length) sharedStage.appendChild(projectNav);
-      sharedRoute.querySelector('.shared-project-scroll').scrollTop = 0;
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    window.addEventListener('hashchange', function () {
-      if (window.location.hash.indexOf('#share-') === 0) highlightSharedCard();
-      else if (!sharedRoute.hidden) {
-        sharedRoute.hidden = true;
-        restoreSharedCard();
-      }
-    });
-    if (window.location.hash) window.setTimeout(highlightSharedCard, 80);
+    window.addEventListener('hashchange', showSharedPage);
+    if (window.location.hash) window.setTimeout(showSharedPage, 80);
   }
 
   document.addEventListener('DOMContentLoaded', initPortfolioCardSharing);

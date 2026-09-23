@@ -114,10 +114,7 @@
   "share_card_aria": "شارك هذا المشروع",
   "share_link_copied": "تم نسخ الرابط. أرسله لمن تريد.",
   "share_copy_prompt": "انسخ هذا الرابط:",
-  "shared_card_browse": "استكشف معرض الأعمال كاملاً",
-  "share_previous_project": "المشروع السابق",
-  "share_next_project": "المشروع التالي",
-  "share_project_navigation_aria": "تصفح مشاريع معرض الأعمال",
+  "shared_card_browse": "الانتقال إلى معرض الأعمال",
 
   "proj_rs_brand_title": "رويال سميلز — معرض بصري",
   "proj_rs_brand_desc": "صور منتجات وهوية بصرية لخط عطور ومنتجات رويال سميلز.",
