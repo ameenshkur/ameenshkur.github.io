@@ -10,6 +10,7 @@ var G = {
   'baghe-apple-cider': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/apple-cider/',f:['01-cover.webp','02-peeling-shampoo.webp','03-clarifying-tonic.webp','04-anti-dandruff-shampoo.webp']},
   'baghe-coconut-aloe': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/coconut-aloe-vera/',f:['01-cover.webp','02-shampoo.webp','03-conditioner.webp','04-pre-wash-hair-mask.webp']},
   'baghe-shake-repair': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/shake-n-repair/',f:['01-cover.webp','02-repair-treatment-spray.webp','03-curl-mousse.webp','04-gloss-cream.webp','05-straight-mousse.webp']},
+  'baghe-rosemary-clove': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/rosemary-clove/',f:['01-cover.webp','02-details.webp','03-details.webp','04-details.webp']},
   'rs-brand':     {p:'assets/projects/design/royal-smells/brand/',f:['royal-smells-armani-code-perfume-bottle.jpg','royal-smells-aroma-oil-collection-flat-lay.jpg','royal-smells-cute-reed-spray-collage.jpg','royal-smells-la-panthere-perfume-guide.jpg','royal-smells-mr-scandal-perfume-bottle.jpg','royal-smells-room-fragrance-sprays-collection.jpg','royal-smells-wild-berries-room-spray.jpg','img-010.jpg']},
   'rs-edited':    {p:'assets/projects/design/royal-smells/edited/',f:['1-edited.jpg','2-edited.jpg','3-edited.jpg','4-edited.jpg','5-edited.jpg','6-edited.jpg','cover-edited.jpg','cta-edited.jpg']},
   'rs-candy':     {p:'assets/projects/design/royal-smells/candy/',f:['gemini-generated-image-3ltgjf3ltgjf3ltg-eid.jpg','gemini-generated-image-6ejk016ejk016ejk-eid.jpg','gemini-generated-image-cyj254cyj254cyj2-eid.jpg','gemini-generated-image-l38mhul38mhul38m-eid.jpg','gemini-generated-image-lsxd4llsxd4llsxd-eid.jpg','gemini-generated-image-spucadspucadspuc-eid.jpg','gemini-generated-image-wiv7tgwiv7tgwiv7-eid.jpg']},
@@ -257,29 +258,10 @@ function prepareSplitText(element, lang, startDelay, stagger) {
   }, startDelay + Math.max(pieces.length - 1, 0) * stagger + 560));
 }
 
-function prepareHeroPillWipe(tag) {
-  if (!tag) return;
-
-  tag.classList.remove('pill-wipe-running', 'pill-wipe-complete');
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    tag.classList.add('pill-wipe-complete');
-    return;
-  }
-
-  tag.classList.add('pill-wipe-running');
-  heroSupportTimers.push(window.setTimeout(function () {
-    tag.classList.remove('pill-wipe-running');
-    tag.classList.add('pill-wipe-complete');
-  }, 680));
-}
-
 function prepareHeroSupportingMotion(lang) {
   heroSupportTimers.forEach(function (timer) { window.clearTimeout(timer); });
   heroSupportTimers = [];
 
-  var tag = document.querySelector('.hero-tag');
-  prepareSplitText(tag, lang, 430, 26);
-  prepareHeroPillWipe(tag);
   prepareSplitText(document.querySelector('.hero-bio'), lang, 460, 19);
   document.querySelectorAll('.hero-stats .stat-value').forEach(function (stat, index) {
     prepareSplitText(stat, lang, 760 + index * 70, 22);

@@ -138,17 +138,8 @@ html[dir="rtl"] .lang-option.active { border-left-color: transparent; border-rig
 #hero::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(90deg, rgba(250,250,248,.99) 0%, rgba(250,250,248,.96) 34%, rgba(250,250,248,.76) 54%, rgba(250,250,248,.24) 78%, rgba(250,250,248,.1) 100%), url('assets/hero/hero-glass-jorgen-haland.jpg'); background-position: center, right center; background-size: cover, auto 100%; background-repeat: no-repeat; pointer-events: none; }
 #hero::after { content: ''; position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 68% at 28% 50%, rgba(250,250,248,.14), transparent 62%), radial-gradient(circle, rgba(13,148,136,.14) 1px, transparent 1px); background-size: auto, 28px 28px; opacity: .46; pointer-events: none; }
 .hero-inner { max-width: 700px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-.hero-tag { display: inline-block; position: relative; isolation: isolate; background: transparent; color: var(--teal-dark); font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 22px; letter-spacing: .3px; }
-.hero-tag::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--teal-light); }
-.hero-tag.pill-wipe-running::before { animation: pillClipWipe .4s .17s cubic-bezier(.77,0,.175,1) both; will-change: clip-path; }
-.hero-tag.pill-wipe-complete::before { clip-path: inset(0 0 0 0 round 999px); }
-@keyframes pillClipWipe {
-  from { clip-path: inset(0 50% 0 50% round 999px); }
-  to { clip-path: inset(0 0 0 0 round 999px); }
-}
 .hero-name { font-family: var(--font-head); font-size: clamp(48px, 8vw, 80px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; color: var(--text); margin-bottom: 16px; }
 html.liberation-pending .hero-name,
-html.liberation-pending .hero-tag,
 html.liberation-pending .hero-bio,
 html.liberation-pending .hero-btns,
 html.liberation-pending .hero-stats { visibility: hidden; }
@@ -225,7 +216,26 @@ section { padding: 96px 24px; }
 .section-heading { font-family: var(--font-head); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.15; letter-spacing: -1px; color: var(--text); margin-bottom: 52px; }
 
 /* ── SERVICES ── */
-#services { background: var(--bg2); }
+#services {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f7f8f6 0%, var(--bg2) 52%, #f3f8f6 100%);
+}
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 34rem 25rem at 9% 55%, rgba(13,148,136,.075), transparent 72%),
+    radial-gradient(ellipse 36rem 24rem at 91% 18%, rgba(45,212,191,.075), transparent 74%),
+    radial-gradient(circle, rgba(15,23,42,.07) .65px, transparent .85px);
+  background-size: auto, auto, 26px 26px;
+  mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+}
+#services > .container { position: relative; z-index: 1; }
 .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
 .service-card.reveal { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 28px; box-shadow: 0 10px 24px rgba(15,23,42,.045); transition: opacity .32s ease, transform .38s cubic-bezier(.22,.61,.36,1), box-shadow .38s cubic-bezier(.22,.61,.36,1), border-color .38s ease; }
 @media (hover: hover) {
@@ -616,7 +626,6 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
   #hero::before { background-image: linear-gradient(180deg, rgba(250,250,248,.995) 0%, rgba(250,250,248,.985) 48%, rgba(250,250,248,.92) 72%, rgba(250,250,248,.76) 100%), url('assets/hero/hero-glass-mobile-jorgen-haland.jpg'); background-position: center, center bottom; background-size: cover, auto 52%; opacity: 1; }
   #hero::after { opacity: .24; }
   .hero-inner { width: 100%; max-width: calc(100vw - 32px); min-width: 0; text-align: center; }
-  .hero-tag { display: inline-flex; align-items: center; justify-content: center; max-width: calc(100vw - 48px); white-space: nowrap; line-height: 1.2; margin-left: auto; margin-right: auto; margin-bottom: 20px; font-size: clamp(7.8px, 2.15vw, 10.5px); padding: 6px 10px; letter-spacing: 0; overflow: hidden; text-overflow: ellipsis; }
   .hero-name { font-size: clamp(32px, 9vw, 40px); letter-spacing: -.35px; margin-bottom: 16px; overflow-wrap: anywhere; }
   .hero-bio { width: 100%; max-width: 300px; margin-bottom: 32px; line-height: 1.68; overflow-wrap: break-word; }
   .hero-btns { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 36px; }
@@ -704,7 +713,6 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
 @media (max-width: 480px) {
   #hero { padding-top: 100px; padding-bottom: 56px; }
   #hero::before { background-position: center, center bottom; background-size: cover, auto 46%; }
-  .hero-tag { max-width: calc(100vw - 40px); padding-left: 8px; padding-right: 8px; }
   .hero-name { font-size: clamp(31px, 9vw, 36px); }
   .hero-bio { max-width: 292px; font-size: 15px; }
   .hero-btns > a, .hero-btns > button, .hero-btns > .ask-ai-menu-shell { max-width: 286px; }
@@ -718,7 +726,6 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
   #hero::before { background-position: center, right center; background-size: cover, auto 104%; }
   .hero-inner { width: 100%; max-width: 1200px; text-align: start; display: block; }
   .hero-copy { max-width: 760px; min-width: 0; }
-  .hero-tag { font-size: 13px; padding: 5px 16px; margin-bottom: 26px; }
   .hero-name { font-size: clamp(52px, 7.2vw, 84px); margin-bottom: 20px; }
   .hero-bio { font-size: 17px; margin: 0 0 36px; }
   .hero-btns { justify-content: flex-start; gap: 14px; margin-bottom: 58px; }
@@ -772,7 +779,6 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
   }
   #hero::before { background-image: linear-gradient(90deg, rgba(250,250,248,.99) 0%, rgba(250,250,248,.95) 39%, rgba(250,250,248,.8) 61%, rgba(250,250,248,.36) 100%), url('assets/hero/hero-glass-jorgen-haland.jpg'); background-position: center, right center; background-size: cover, auto 100%; }
   .hero-inner { max-width: 92vw; }
-  .hero-tag { font-size: 12px; margin-bottom: 22px; }
   .hero-name { font-size: clamp(56px, 8vw, 74px); margin-bottom: 18px; }
   .hero-bio { font-size: 16px; max-width: 560px; margin-bottom: 32px; }
   .hero-btns { margin-bottom: 44px; }
@@ -807,14 +813,12 @@ html[dir="rtl"] .vid-label { right: auto; left: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   html.liberation-pending .hero-name,
-  html.liberation-pending .hero-tag,
   html.liberation-pending .hero-bio,
   html.liberation-pending .hero-btns,
   html.liberation-pending .hero-stats { visibility: visible; }
   .hero-name.liberation-running .liberation-unit { animation: none !important; opacity: 1; filter: none; transform: none; }
   .split-text-running .split-text-word,
   .hero-btns.hero-support-running { animation: none !important; opacity: 1; transform: none; }
-  .hero-tag.pill-wipe-running::before { animation: none !important; clip-path: none; }
   .hero-scroll-cue,
   .hero-scroll-cue i,
   .hero-scroll-cue svg {
