@@ -11,6 +11,11 @@ var G = {
   'baghe-coconut-aloe': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/coconut-aloe-vera/',f:['01-cover.webp','02-shampoo.webp','03-conditioner.webp','04-pre-wash-hair-mask.webp']},
   'baghe-shake-repair': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/shake-n-repair/',f:['01-cover.webp','02-repair-treatment-spray.webp','03-curl-mousse.webp','04-gloss-cream.webp','05-straight-mousse.webp']},
   'baghe-rosemary-clove': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/rosemary-clove/',f:['01-cover.webp','02-details.webp','03-details.webp','04-details.webp']},
+  'rs-edited':    {p:'assets/projects/design/royal-smells/edited/',f:['1-edited.jpg','2-edited.jpg','3-edited.jpg','4-edited.jpg','5-edited.jpg','6-edited.jpg','cover-edited.jpg','cta-edited.jpg']},
+  'rs-spray':     {p:'assets/projects/design/royal-smells/how-to-spray/',f:['how-to-spray-la-panthere-perfume.jpg','how-to-spray-la-panthere-guide.jpg','how-to-spray-wrist-step.jpg','how-to-spray-neck-step.jpg','how-to-spray-behind-ear-step.jpg']},
+  'rs-ramadan':   {p:'assets/projects/design/royal-smells/ramadan-carousel/',f:['temp-pers1.jpg','temp-pers10.jpg','temp-pers2.jpg','temp-pers3.jpg','temp-pers4.jpg','temp-pers5.jpg','temp-pers6.jpg','temp-pers7.jpg','temp-pers8.jpg','temp-pers9.jpg']},
+  'rs-diffuser':  {p:'assets/projects/design/royal-smells/diffuser/',f:['10changeing.jpg','1smaller.jpg','2darker.jpg','3changeing.jpg','7changeing.jpg','8changeing.jpg','9changeingri.jpg','royal-smells-diffuser-set-product-shot.jpg','royal-smells-mango-coconut-vanilla-diffuser.jpg','royal-smells-s5-diffuser-and-refill-bottle.jpg']},
+  'rs-spray-overlay':{p:'assets/projects/design/royal-smells/spray-overlay/',f:['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg']},
   'ec-gallery':   {p:'assets/projects/design/emerald-city/',f:['ec-eid-post.jpg','ec-luxury-street.jpg','ec-main-gate.jpg','ec-market.jpg','ec-mosque-dusk.jpg','ec-mosque.jpg','ec-night-view.jpg','ec-park-garden.jpg','ec-park-sunset.jpg','ec-playground.jpg','ec-school.jpg','ec-project-design-2.jpg','ec-sports-court.jpg','ec-street-view.jpg','ec-townhouses.jpg','ec-villa-facade.jpg','ec-villa-flowers.jpg','ec-villa-fountain.jpg','ec-villa-rose-2.jpg','ec-villa-rose.jpg','ec-villa-side.jpg']},
   'ec-carousel':  {p:'assets/projects/design/emerald-city/carousel/',f:['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg']},
   'id-card-extraction':{p:'assets/projects/dev/',f:['covers/id-card-extraction-a4-export.webp','id-card-extraction/02-review-screen.jpg','id-card-extraction/03-export-screen.jpg']},
@@ -344,7 +349,7 @@ var LANGS = {
 // ── i18n ──────────────────────────────────────────────────────
 var translations = {};
 var currentLang = localStorage.getItem('lang') || 'en';
-var I18N_VERSION = '2026-07-08-card-more-labels-v1';
+var I18N_VERSION = '2026-09-24-dynamic-campaign-counts-v1';
 
 function loadLang(lang) {
   fetch('assets/lang/' + lang + '.json?v=' + encodeURIComponent(I18N_VERSION))
@@ -387,6 +392,15 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
     var k = el.getAttribute('data-i18n-html');
     if (translations[k] !== undefined) el.innerHTML = translations[k];
+  });
+
+  document.querySelectorAll('details.campaign-card [data-campaign-count]').forEach(function (el) {
+    var card = el.closest('details.campaign-card');
+    var list = card && card.querySelector('.campaign-list');
+    var count = list ? list.querySelectorAll(':scope > .campaign-item-btn').length : 0;
+    var key = el.getAttribute('data-i18n');
+    var template = translations[key] || '{count}';
+    el.textContent = template.replace(/\{count\}/g, String(count));
   });
 
   initExpandableCardText();
