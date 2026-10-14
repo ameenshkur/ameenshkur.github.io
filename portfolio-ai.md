@@ -174,7 +174,7 @@ LinkedIn describes Emerald CRM as an Arabic-first real-estate payment management
 
 ### Baghe Khatina — Recent Campaign Work
 
-Recent Urban Care work includes three single product posts for Purple Anti-Brassiness, Biotin & Keratin, and Pink Grapefruit & Ginger, plus four organized product-education carousels for Glycolic & Retinol, Apple Cider, Pure Coconut & Aloe Vera, and Shake N Repair. The wider single-image set also includes a Flormar and Baghe Khatina event invitation, plus Ostwint sunscreen and aloe vera summer-care visuals. The work combines product-focused composition, Arabic campaign messaging, and consistent social-media presentation across hair-care and beauty ranges.
+Recent Urban Care work includes three single product posts for Purple Anti-Brassiness, Biotin & Keratin, and Pink Grapefruit & Ginger, plus four organized product-education carousels for Glycolic & Retinol, Apple Cider, Pure Coconut & Aloe Vera, and Shake N Repair. The wider single-image set also includes a Flormar and Baghe Khatina event invitation, plus Ostwint sunscreen and aloe vera summer-care visuals. The work combines product-focused composition, Arabic campaign messaging, and consistent social-media presentation across hair-care and beauty ranges. Recent additions include Flormar October offers, Pastel October beauty promotions, and a Saudi National Day Flormar visual.
 
 ### Royal Smells
 

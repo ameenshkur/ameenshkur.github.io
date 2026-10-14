@@ -4,12 +4,14 @@ var videoAspects = {};
 // ── Gallery data ──────────────────────────────────────────────
 var G = {
   'employee-arrival-app': {p:'assets/projects/employee-arrival-app/',f:['01-employee-arrival-app-overview.webp','02-employee-check-in-experience.webp','03-location-aware-check-in-radar.webp','04-admin-dashboard-overview.webp','05-attendance-exceptions-review.webp','06-branches-schedules-workflow.webp']},
-  'baghe-singles': {p:'assets/projects/design/baghe-khatina/urban-care/singles/',f:['purple-anti-brassiness.webp','biotin-keratin.webp','pink-grapefruit-ginger.webp','flormar-baghe-event.webp','ostwint-summer-sunscreen.webp','ostwint-summer-sunscreen-lifestyle.webp']},
+  'baghe-singles': {p:'assets/projects/design/baghe-khatina/urban-care/singles/',f:['purple-anti-brassiness.webp','biotin-keratin.webp','pink-grapefruit-ginger.webp','flormar-baghe-event.webp','ostwint-summer-sunscreen.webp','ostwint-summer-sunscreen-lifestyle.webp','saudi-national-day-flormar-campaign.webp']},
   'baghe-glycolic-retinol': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/glycolic-retinol/',f:['01-cover.webp','02-shampoo.webp','03-conditioner.webp','04-booster-milk.webp','05-hair-serum.webp']},
   'baghe-apple-cider': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/apple-cider/',f:['01-cover.webp','02-peeling-shampoo.webp','03-clarifying-tonic.webp','04-anti-dandruff-shampoo.webp']},
   'baghe-coconut-aloe': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/coconut-aloe-vera/',f:['01-cover.webp','02-shampoo.webp','03-conditioner.webp','04-pre-wash-hair-mask.webp']},
   'baghe-shake-repair': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/shake-n-repair/',f:['01-cover.webp','02-repair-treatment-spray.webp','03-curl-mousse.webp','04-gloss-cream.webp','05-straight-mousse.webp']},
   'baghe-rosemary-clove': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/rosemary-clove/',f:['01-cover.webp','02-details.webp','03-details.webp','04-details.webp']},
+  'baghe-flormar-october-sales': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/flormar-october-sales/',f:['01-cover.webp','02-sheer-up-blush-20k.webp','03-sheer-up-blush-25k.webp','04-concealer-powder-loose-20k.webp','05-eye-look-25k.webp','06-skin-essentials-30k.webp','07-lip-cheek-puffy-25k.webp','08-primer-powder-20k.webp','09-puffy-loose-blush-30k.webp','10-primer-loose-concealer-25k.webp']},
+  'baghe-pastel-october-sales': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/pastel-october-sales/',f:['01-cover.webp','02-nail-polish-summer-2024.webp','03-nail-polish-wonderland-2026.webp','04-eye-liners.webp','05-lipstick.webp','06-beauty-filter.webp','07-lip-gloss.webp','08-beauty-essentials.webp','09-nail-polish-summer-2024.webp','10-nail-polish-wonderland-2026.webp','11-hadeel-alazawi-collaboration-summer-2024.webp','12-hadeel-alazawi-collaboration-wonderland-2026.webp']},
   'rs-ramadan':   {p:'assets/projects/design/royal-smells/ramadan-carousel/',f:['temp-pers1.jpg','temp-pers10.jpg','temp-pers2.jpg','temp-pers3.jpg','temp-pers4.jpg','temp-pers5.jpg','temp-pers6.jpg','temp-pers7.jpg','temp-pers8.jpg','temp-pers9.jpg']},
   'rs-spray-overlay':{p:'assets/projects/design/royal-smells/spray-overlay/',f:['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg']},
   'ec-gallery':   {p:'assets/projects/design/emerald-city/',f:['ec-eid-post.jpg','ec-luxury-street.jpg','ec-main-gate.jpg','ec-market.jpg','ec-mosque-dusk.jpg','ec-mosque.jpg','ec-night-view.jpg','ec-park-garden.jpg','ec-park-sunset.jpg','ec-playground.jpg','ec-school.jpg','ec-project-design-2.jpg','ec-sports-court.jpg','ec-street-view.jpg','ec-townhouses.jpg','ec-villa-facade.jpg','ec-villa-flowers.jpg','ec-villa-fountain.jpg','ec-villa-rose-2.jpg','ec-villa-rose.jpg','ec-villa-side.jpg']},
@@ -345,7 +347,7 @@ var LANGS = {
 // ── i18n ──────────────────────────────────────────────────────
 var translations = {};
 var currentLang = localStorage.getItem('lang') || 'en';
-var I18N_VERSION = '2026-09-24-dynamic-campaign-counts-v1';
+var I18N_VERSION = '2026-10-14-baghe-october-campaigns-v1';
 
 function loadLang(lang) {
   fetch('assets/lang/' + lang + '.json?v=' + encodeURIComponent(I18N_VERSION))

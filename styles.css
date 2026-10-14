@@ -100,7 +100,12 @@ html[lang="zh"] .section-heading,
 html[lang="zh"] .nav-logo {
   letter-spacing: 0;
 }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: rgba(13,148,136,.52) var(--bg2); }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: var(--bg2); }
+*::-webkit-scrollbar-thumb { min-height: 28px; border: 2px solid var(--bg2); border-radius: 999px; background: rgba(13,148,136,.42); }
+*::-webkit-scrollbar-thumb:hover { background: var(--teal); }
+*::-webkit-scrollbar-corner { background: var(--bg2); }
 body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
 
 /* ── NAVBAR ── */
