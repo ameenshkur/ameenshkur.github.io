@@ -4,6 +4,7 @@ var videoAspects = {};
 // ── Gallery data ──────────────────────────────────────────────
 var G = {
   'employee-arrival-app': {p:'assets/projects/employee-arrival-app/',f:['01-employee-arrival-app-overview.webp','02-employee-check-in-experience.webp','03-location-aware-check-in-radar.webp','04-admin-dashboard-overview.webp','05-attendance-exceptions-review.webp','06-branches-schedules-workflow.webp']},
+  'baghe-khatina-website': {p:'assets/projects/dev/baghe-khatina-website/',f:['01-project-cover.jpg','02-full-website-overview.jpg','03-company-expertise.jpg','04-brand-portfolio.jpg','05-retail-contact.jpg']},
   'baghe-singles': {p:'assets/projects/design/baghe-khatina/urban-care/singles/',f:['purple-anti-brassiness.webp','biotin-keratin.webp','pink-grapefruit-ginger.webp','flormar-baghe-event.webp','ostwint-summer-sunscreen.webp','ostwint-summer-sunscreen-lifestyle.webp','saudi-national-day-flormar-campaign.webp']},
   'baghe-glycolic-retinol': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/glycolic-retinol/',f:['01-cover.webp','02-shampoo.webp','03-conditioner.webp','04-booster-milk.webp','05-hair-serum.webp']},
   'baghe-apple-cider': {p:'assets/projects/design/baghe-khatina/urban-care/carousels/apple-cider/',f:['01-cover.webp','02-peeling-shampoo.webp','03-clarifying-tonic.webp','04-anti-dandruff-shampoo.webp']},

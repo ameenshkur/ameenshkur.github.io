@@ -281,6 +281,9 @@ section { padding: 96px 24px; }
 .proj-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
 .proj-title { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.35; }
 .proj-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.proj-external-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 13px; color: var(--teal); font-size: 12px; font-weight: 700; text-decoration: none; }
+.proj-external-link:hover { color: var(--text); text-decoration: underline; }
+.proj-external-link svg { width: 14px; height: 14px; }
 .card-desc-toggle { display: none; }
 .campaign-card { border-color: rgba(13,148,136,.35); box-shadow: 0 0 0 1px rgba(13,148,136,.08); }
 .campaign-card summary { display: block; list-style: none; cursor: pointer; }
