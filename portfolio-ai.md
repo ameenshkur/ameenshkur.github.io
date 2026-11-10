@@ -174,7 +174,7 @@ LinkedIn describes Emerald CRM as an Arabic-first real-estate payment management
 
 ### Baghe Khatina — Recent Campaign Work
 
-Recent Urban Care work includes three single product posts for Purple Anti-Brassiness, Biotin & Keratin, and Pink Grapefruit & Ginger, plus four organized product-education carousels for Glycolic & Retinol, Apple Cider, Pure Coconut & Aloe Vera, and Shake N Repair. The wider single-image set also includes a Flormar and Baghe Khatina event invitation, plus Ostwint sunscreen and aloe vera summer-care visuals. The work combines product-focused composition, Arabic campaign messaging, and consistent social-media presentation across hair-care and beauty ranges. Recent additions include Flormar October offers, Pastel October beauty promotions, and a Saudi National Day Flormar visual.
+Recent Urban Care work includes three single product posts for Purple Anti-Brassiness, Biotin & Keratin, and Pink Grapefruit & Ginger, plus four organized product-education carousels for Glycolic & Retinol, Apple Cider, Pure Coconut & Aloe Vera, and Shake N Repair. The wider single-image set also includes a Flormar and Baghe Khatina event invitation, plus Ostwint sunscreen and aloe vera summer-care visuals. The work combines product-focused composition, Arabic campaign messaging, and consistent social-media presentation across hair-care and beauty ranges. Recent additions include Flormar October offers, Pastel October beauty promotions, the Flormar Ready from Hang and New Step Pink Leaves carousels, and a Saudi National Day Flormar visual.
 
 ### Royal Smells
 
@@ -186,7 +186,7 @@ The Emerald City body of work includes residential compound imagery, villa and l
 
 ### 3D, motion, and promotional video
 
-Additional work includes cosmetics product renders, Ramadan anamorphic content, beauty and skincare product videos, splash-spray promotion, a Kurdish Anatomy Dictionary motion video, a Slemani Water Company promotional video, a commissioned door-collection showcase for Chinese manufacturer Zhejiang Zhenghe Industry and Trade, and selected Vimeo-hosted videos titled Flormar — Store Launch Promo, Spider-Man — Creative Motion Study, Handa — Beauty Collage Campaign, and Cinematic AI Concept.
+Additional work includes cosmetics product renders, Ramadan anamorphic content, beauty and skincare product videos, splash-spray promotion, a Kurdish Anatomy Dictionary motion video, a Slemani Water Company promotional video, a commissioned door-collection showcase for Chinese manufacturer Zhejiang Zhenghe Industry and Trade, and selected Vimeo-hosted videos titled Flormar — Store Launch Promo, Flormar — K Cream Video, Spider-Man — Creative Motion Study, Handa — Beauty Collage Campaign, and Cinematic AI Concept.
 
 ### Automation and internal tools
 
