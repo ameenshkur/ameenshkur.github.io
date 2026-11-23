@@ -254,7 +254,7 @@ section { padding: 96px 24px; }
   .service-card.reveal.visible:hover { border-color: rgba(13,148,136,.24); box-shadow: 0 24px 48px rgba(15,23,42,.12), 0 6px 14px rgba(15,23,42,.055); transform: translateY(-7px); }
   .service-card.reveal.visible:hover .service-icon { color: #2dd4bf; transform: scale(1.12); }
 }
-.service-icon { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; margin-bottom: 22px; border: 1px solid #c9eae4; border-radius: 15px; background: #e9f8f5; color: var(--teal-dark); transform-origin: center; transition: color .38s ease, transform .38s cubic-bezier(.22,.61,.36,1); }
+.service-icon { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; margin-bottom: 22px; color: var(--teal-dark); transform-origin: center; transition: color .38s ease, transform .38s cubic-bezier(.22,.61,.36,1); }
 .service-title { line-height: 1.35; font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
 .service-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
 .service-highlight { color: var(--teal-dark); font-weight: 700; }
