@@ -197,5 +197,5 @@
   "lb_swipe_hint": "← Swipe to navigate →",
   "footer_copy": "© 2026 Ameen Zangana · Kirkuk, Iraq",
   "service_web_title": "Website Design & Development",
-  "service_web_desc": "Responsive business websites, e-commerce experiences, and custom web applications for businesses in Kirkuk and beyond."
+  "service_web_desc": "<span class=\"service-highlight\">Responsive business websites</span>, e-commerce experiences, and <span class=\"service-highlight\">custom web applications</span> for businesses in Kirkuk and beyond."
 }
