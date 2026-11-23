@@ -7,7 +7,6 @@
   "nav_contact": "联系",
   "lang_en": "EN",
   "lang_ar": "AR",
-
   "hero_name": "阿明",
   "hero_subtitle": "平面设计师 · 3D产品视觉师 · AI自动化专员",
   "hero_bio": "我为需要更快速、更专业创意流程的企业制作品牌视觉、产品动画和定制自动化工具。",
@@ -48,7 +47,6 @@
   "service_ai_desc": "定制工具，用于<span class=\"service-highlight\">批量图像生成</span>、目录制作、<span class=\"service-highlight\">CRM工作流</span>、文档处理和重复业务任务。",
   "service_translation_title": "翻译服务",
   "service_translation_desc": "<span class=\"service-highlight\">库尔德语、阿拉伯语与英语翻译</span>，覆盖商业内容、界面文字、文件和字幕。",
-
   "experience_label": "经历",
   "experience_heading": "支撑作品的近期角色。",
   "experience_intro": "结合设计执行、3D制作、AI辅助创意工作流和项目办公室协调的实践经历。",
@@ -68,7 +66,6 @@
   "exp_diyako_role": "平面设计师与库尔德教育视觉合作者",
   "exp_diyako_company": "Diyako Hashemi · 库尔德语言学院相关项目",
   "exp_diyako_desc": "制作库尔德语教育视觉、社交媒体素材和出版相关设计，并为一本首日售出400本的库尔德语词典贡献设计。",
-
   "portfolio_heading": "精选作品",
   "featured_label": "精选作品",
   "featured_heading": "具有代表性成果的项目。",
@@ -115,7 +112,6 @@
   "share_link_copied": "链接已复制，可以发送给对方。",
   "share_copy_prompt": "复制此链接：",
   "shared_card_browse": "前往作品集",
-
   "proj_rs_ramadan_carousel_title": "Royal Smells — 斋月社交媒体轮播图",
   "proj_rs_ramadan_carousel_desc": "为 Royal Smells 设计的斋月主题社交媒体轮播海报。",
   "proj_rs_home_sprays_title": "Royal Smells — 家用香氛喷雾产品轮播图",
@@ -124,7 +120,6 @@
   "proj_ec_gallery_desc": "为 Emerald City 住宅综合体营销制作的AI生成与渲染视觉素材。",
   "proj_ec_carousel_title": "Emerald City — 社交媒体轮播图",
   "proj_ec_carousel_desc": "为 Emerald City 制作的阿拉伯语社交媒体轮播视觉，涵盖预约、户型规划、施工质量、别墅生活和办公室到访。",
-
   "proj_hadeel_ana_title": "Hadeel Azaweey 裸眼3D视频",
   "proj_hadeel_ana_desc": "在巴格达最大裸眼3D屏幕 Nogat Baghdad 展出的作品。",
   "proj_hadeel_render_title": "Hadeel Azaweey 卸妆水3D渲染",
@@ -183,7 +178,6 @@
   "proj_diffuser_batch_desc": "Python自动化流水线，可批量生成产品标签图片。使用Pillow将阿拉伯语和英语产品名称添加至扩香器瓶身模板，从单一CSV文件生成110张独特标签图片。",
   "proj_ec_systems_title": "Emerald City — 费用追踪系统",
   "proj_ec_systems_desc": "为 Emerald City 内部构建的项目费用追踪与报告仪表盘。",
-
   "contact_label": "联系",
   "contact_heading": "期待与您合作",
   "contact_subtext": "欢迎自由职业项目、合作洽谈及全职机会。请通过以下任意渠道与我联系。",
@@ -198,9 +192,11 @@
   "wechat_modal_title": "添加我的微信",
   "wechat_modal_body": "请在微信中扫描此二维码，直接联系我。",
   "wechat_modal_alt": "微信二维码",
-
   "card_more": "更多",
   "card_less": "收起",
-  "lb_swipe_hint": "\u2190 滑动切换 \u2192",
-  "footer_copy": "© 2026 阿明 · 伊拉克基尔库克"
+  "lb_swipe_hint": "← 滑动切换 →",
+  "footer_copy": "© 2026 阿明 · 伊拉克基尔库克",
+  "service_web_title": "???????",
+  "service_web_desc": "?????????????????????????????????????",
+  "service_web_link": "????????"
 }

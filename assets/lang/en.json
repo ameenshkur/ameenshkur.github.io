@@ -7,7 +7,6 @@
   "nav_contact": "Contact",
   "lang_en": "EN",
   "lang_ar": "AR",
-
   "hero_name": "Ameen Zangana",
   "hero_subtitle": "Graphic Designer · 3D Product Visualizer · AI Automation Specialist",
   "hero_bio": "I create brand visuals, product animations, and custom automation tools for businesses that need faster, more professional creative workflows.",
@@ -48,7 +47,6 @@
   "service_ai_desc": "Custom tools for <span class=\"service-highlight\">batch image generation</span>, catalogue creation, <span class=\"service-highlight\">CRM workflows</span>, document processing, and repetitive business tasks.",
   "service_translation_title": "Translation & Localization",
   "service_translation_desc": "<span class=\"service-highlight\">Kurdish, Arabic, and English translation</span> for business content, UI text, documents, and subtitles.",
-
   "experience_label": "Experience",
   "experience_heading": "Recent roles behind the work.",
   "experience_intro": "A practical mix of design execution, 3D production, AI-assisted creative workflows, and project-office coordination.",
@@ -68,7 +66,6 @@
   "exp_diyako_role": "Graphic Designer & Kurdish Educational Design Collaborator",
   "exp_diyako_company": "Diyako Hashemi · Kurdish Language Academy context",
   "exp_diyako_desc": "Created Kurdish-language educational visuals, social media materials, and publishing-related design work, including contributions to a Kurdish dictionary that sold 400 copies on release day.",
-
   "featured_label": "Featured Work",
   "featured_heading": "Selected projects with the strongest results.",
   "featured_intro": "A focused view of my strongest design, 3D, AI video, and automation work before the full project archive.",
@@ -104,7 +101,6 @@
   "case_id_role": "Computer-vision workflow and review UI",
   "case_id_tools": "Python, browser UI, image processing",
   "case_id_result": "Reduced manual ID preparation into a guided export process",
-
   "portfolio_label": "Project Archive",
   "portfolio_heading": "Explore more work by category.",
   "filter_all": "All",
@@ -116,7 +112,6 @@
   "share_link_copied": "Link copied. Send it to anyone.",
   "share_copy_prompt": "Copy this link:",
   "shared_card_browse": "Go to portfolio",
-
   "proj_rs_ramadan_carousel_title": "Royal Smells — Ramadan Social Carousel",
   "proj_rs_ramadan_carousel_desc": "Ramadan-themed carousel posts created to keep Royal Smells campaigns seasonal, warm, and consistent.",
   "proj_rs_home_sprays_title": "Royal Smells — Home Spray Product Carousel",
@@ -125,7 +120,6 @@
   "proj_ec_gallery_desc": "AI-generated and rendered visuals for Emerald City residential compound marketing, covering villas, streets, parks, and lifestyle scenes.",
   "proj_ec_carousel_title": "Emerald City — Social Carousel",
   "proj_ec_carousel_desc": "Arabic social media carousel visuals for Emerald City, covering booking, planning, construction quality, villa living, and office visits.",
-
   "proj_hadeel_ana_title": "Hadeel Azaweey Anamorphic Video",
   "proj_hadeel_ana_desc": "Large-format 3D product video created for Nogat Baghdad's anamorphic screen, built to make a cosmetics campaign feel dimensional and high-impact.",
   "proj_hadeel_render_title": "Hadeel Azaweey Make-up Remover Render",
@@ -184,7 +178,6 @@
   "proj_diffuser_batch_desc": "Python automation pipeline that turned one CSV file into 110 labeled diffuser product images with Arabic and English names applied to bottle mockups.",
   "proj_ec_systems_title": "Emerald City — Expense Tracker",
   "proj_ec_systems_desc": "Internal expense tracking dashboard for Emerald City, built to monitor project-level costs and reporting.",
-
   "contact_label": "Get in touch",
   "contact_heading": "Have a project in mind?",
   "contact_subtext": "Send me a message for design, 3D, AI automation, or translation work. I am available for freelance projects, collaborations, and full-time opportunities.",
@@ -199,9 +192,11 @@
   "wechat_modal_title": "Add me on WeChat",
   "wechat_modal_body": "Scan this QR code in WeChat to contact me directly.",
   "wechat_modal_alt": "WeChat QR code",
-
   "card_more": "More",
   "card_less": "Less",
-  "lb_swipe_hint": "\u2190 Swipe to navigate \u2192",
-  "footer_copy": "© 2026 Ameen Zangana · Kirkuk, Iraq"
+  "lb_swipe_hint": "← Swipe to navigate →",
+  "footer_copy": "© 2026 Ameen Zangana · Kirkuk, Iraq",
+  "service_web_title": "Website Design & Development",
+  "service_web_desc": "Responsive business websites, e-commerce experiences, and custom web applications for businesses in Kirkuk and beyond.",
+  "service_web_link": "Explore web development"
 }
