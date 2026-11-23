@@ -9,8 +9,8 @@
   "lang_ar": "AR",
   "hero_name": "Ameen Zangana",
   "hero_subtitle": "Graphic Designer · 3D Product Visualizer · AI Automation Specialist",
-  "hero_bio": "I create brand visuals, product animations, and custom automation tools for businesses that need faster, more professional creative workflows.",
-  "hero_bio_mobile": "I create polished visuals, product animations, and practical automation tools for brands and teams.",
+  "hero_bio": "I design websites, brand visuals, and custom automation tools for businesses in Kirkuk, Iraq and beyond.",
+  "hero_bio_mobile": "I design websites, brand visuals, and automation tools for businesses.",
   "hero_cta_work": "View Selected Work",
   "hero_cta_cv": "Download CV",
   "ask_ai_button": "Ask AI about me",
@@ -180,7 +180,7 @@
   "proj_ec_systems_desc": "Internal expense tracking dashboard for Emerald City, built to monitor project-level costs and reporting.",
   "contact_label": "Get in touch",
   "contact_heading": "Have a project in mind?",
-  "contact_subtext": "Send me a message for design, 3D, AI automation, or translation work. I am available for freelance projects, collaborations, and full-time opportunities.",
+  "contact_subtext": "Send me a message about websites, design, 3D, AI automation, or translation. I am available for freelance projects, collaborations, and full-time opportunities.",
   "contact_email_label": "Email",
   "contact_whatsapp_label": "WhatsApp",
   "contact_wechat_label": "WeChat",
@@ -197,6 +197,5 @@
   "lb_swipe_hint": "← Swipe to navigate →",
   "footer_copy": "© 2026 Ameen Zangana · Kirkuk, Iraq",
   "service_web_title": "Website Design & Development",
-  "service_web_desc": "Responsive business websites, e-commerce experiences, and custom web applications for businesses in Kirkuk and beyond.",
-  "service_web_link": "Explore web development"
+  "service_web_desc": "Responsive business websites, e-commerce experiences, and custom web applications for businesses in Kirkuk and beyond."
 }
