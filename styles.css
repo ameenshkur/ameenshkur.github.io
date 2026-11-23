@@ -939,3 +939,9 @@ body.share-page-open > .nav-backdrop { display: none; }
     transition: opacity .2s ease;
   }
 }
+
+/* Lenis controls wheel scrolling while native scrolling remains the fallback. */
+html.lenis, html.lenis body { height: auto; }
+html.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

@@ -1,3 +1,20 @@
+// Smooth wheel scrolling; retain native scrolling when reduced motion is requested.
+var portfolioLenis = null;
+(function () {
+  if (typeof Lenis === 'undefined') return;
+  var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function updateScrolling() {
+    if (portfolioLenis) { portfolioLenis.destroy(); portfolioLenis = null; }
+    if (!motion.matches) {
+      portfolioLenis = new Lenis({ autoRaf: true, anchors: true, allowNestedScroll: true,
+        prevent: function () { return document.body.style.overflow === 'hidden'; } });
+    }
+  }
+  updateScrolling();
+  if (motion.addEventListener) motion.addEventListener('change', updateScrolling);
+  else if (motion.addListener) motion.addListener(updateScrolling);
+})();
+
 // ── Video aspect ratios (populated by oEmbed fetch) ───────────
 var videoAspects = {};
 
@@ -1105,7 +1122,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cue.addEventListener('click', function () {
       hideCue();
-      services.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      if (portfolioLenis) portfolioLenis.scrollTo(services);
+      else services.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     });
 
     if ('IntersectionObserver' in window) {
