@@ -434,7 +434,7 @@ var LANGS = {
 // ── i18n ──────────────────────────────────────────────────────
 var translations = {};
 var currentLang = localStorage.getItem('lang') || 'en';
-var I18N_VERSION = '2026-11-23-services-refresh';
+var I18N_VERSION = '2026-11-26-featured-polish';
 
 function loadLang(lang) {
   fetch('assets/lang/' + lang + '.json?v=' + encodeURIComponent(I18N_VERSION))
@@ -1779,7 +1779,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       var scale = Math.max(.88, 1 - depth * .04);
       card.style.transform = depth > .001 ? 'scale(' + scale.toFixed(4) + ')' : '';
-      card.style.setProperty('--featured-dim', Math.min(.22, depth * .075).toFixed(3));
+      card.style.setProperty('--featured-dim', Math.min(.15, depth * .05).toFixed(3));
       card.inert = index < slots.length - 1 && tops[index + 1] <= 110 + index * 14 + 18;
     });
   }
