@@ -1097,3 +1097,22 @@ html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px
   #portfolio .campaign-card[open] .campaign-list, html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { min-height: 0; margin: -6px 0 0; padding: 20px 14px 14px; border: 1px solid #dfe8e4; border-radius: 0 0 12px 12px; transform-origin: center top; }
 }
 @media (prefers-reduced-motion: reduce) { #portfolio .campaign-hover-cue { transition: none; } }
+
+/* The collection is a matching sheet tucked behind the cover. */
+#portfolio .campaign-card[open] { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+#portfolio .campaign-card[open] summary { isolation: isolate; }
+#portfolio .campaign-card[open] .campaign-list,
+html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list {
+  width: 100%; height: auto; aspect-ratio: 1 / 1; min-height: 0;
+  align-self: start; overflow-y: auto; overscroll-behavior: contain;
+  margin: 0 0 0 -12px; padding: 20px 14px 20px 24px;
+  border-radius: 10px; scrollbar-width: thin; scrollbar-color: #9bb6ad transparent;
+}
+html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px 0 0; padding: 20px 24px 20px 14px; }
+#portfolio .campaign-list::-webkit-scrollbar { width: 6px; }
+#portfolio .campaign-list::-webkit-scrollbar-track { background: transparent; }
+#portfolio .campaign-list::-webkit-scrollbar-thumb { min-height: 28px; border: 0; border-radius: 99px; background: #9bb6ad; }
+@media (max-width: 560px) {
+  #portfolio .campaign-card[open] .campaign-list,
+  html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { width: 100%; aspect-ratio: 1 / 1; margin: -10px 0 0; padding: 24px 14px 14px; border-radius: 10px; }
+}

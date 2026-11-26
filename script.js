@@ -1079,8 +1079,8 @@ document.addEventListener('DOMContentLoaded', function () {
         card.dataset.folding = 'true';
         var mobileClose = window.matchMedia('(max-width: 560px)').matches;
         var rtlClose = document.documentElement.dir === 'rtl';
-        var end = mobileClose ? 'perspective(1000px) rotateX(-65deg) translateY(-12px)' : 'perspective(1000px) rotateY(' + (rtlClose ? 75 : -75) + 'deg) translateX(' + (rtlClose ? 16 : -16) + 'px)';
-        var closingAnimation = list.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: end }], { duration: 240, easing: 'cubic-bezier(.4,0,.8,.2)', fill: 'forwards' });
+        var end = mobileClose ? 'translateY(-90%) scale(.96)' : 'translateX(' + (rtlClose ? '90%' : '-90%') + ') scale(.96)';
+        var closingAnimation = list.animate([{ opacity: 1, transform: 'none' }, { opacity: .7, transform: end }], { duration: 300, easing: 'cubic-bezier(.4,0,.8,.2)', fill: 'forwards' });
         closingAnimation.finished.then(function () {
           closingAnimation.cancel();
           delete card.dataset.folding;
@@ -1114,10 +1114,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (opening) {
         var mobile = window.matchMedia('(max-width: 560px)').matches;
         var rtl = document.documentElement.dir === 'rtl';
-        var start = mobile ? 'perspective(1000px) rotateX(-65deg) translateY(-12px)' : 'perspective(1000px) rotateY(' + (rtl ? 75 : -75) + 'deg) translateX(' + (rtl ? 16 : -16) + 'px)';
+        var start = mobile ? 'translateY(-90%) scale(.96)' : 'translateX(' + (rtl ? '90%' : '-90%') + ') scale(.96)';
         archiveAnimations.push(list.animate([
-          { opacity: .25, transform: start },
-          { opacity: 1, transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translate(0,0)' }
+          { opacity: .7, transform: start },
+          { opacity: 1, transform: 'translate(0,0) scale(1)' }
         ], { duration: 520, delay: 30, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'backwards' }));
         list.querySelectorAll('.campaign-item-btn').forEach(function (item, index) {
           archiveAnimations.push(item.animate([
