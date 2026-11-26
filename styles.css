@@ -100,9 +100,10 @@ html[lang="zh"] .section-heading,
 html[lang="zh"] .nav-logo {
   letter-spacing: 0;
 }
-html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: rgba(13,148,136,.52) var(--bg2); }
+html { scroll-behavior: smooth; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
 *::-webkit-scrollbar-track { background: var(--bg2); }
+*::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 *::-webkit-scrollbar-thumb { min-height: 28px; border: 2px solid var(--bg2); border-radius: 999px; background: rgba(13,148,136,.42); }
 *::-webkit-scrollbar-thumb:hover { background: var(--teal); }
 *::-webkit-scrollbar-corner { background: var(--bg2); }
@@ -1076,4 +1077,4 @@ html[dir="rtl"] #portfolio .card-share-btn { right: auto; left: 12px; }
 .lb:focus { outline: none; }
 
 /* Text selection follows the portfolio palette. */
-::selection { background: #a8ded4; color: #102e2b; }
+::selection { background: #075e56; color: #fff; -webkit-text-fill-color: #fff; }
