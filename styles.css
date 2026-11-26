@@ -1078,3 +1078,22 @@ html[dir="rtl"] #portfolio .card-share-btn { right: auto; left: 12px; }
 
 /* Text selection follows the portfolio palette. */
 ::selection { background: #075e56; color: #fff; -webkit-text-fill-color: #fff; }
+
+/* Collection covers unfold into an attached panel. */
+#portfolio .campaign-toggle { display: none; }
+#portfolio .campaign-card[open] { column-gap: 0; grid-template-columns: minmax(0, calc((100% - 24px) / 2)) minmax(0, 1fr); perspective: 1200px; }
+#portfolio .campaign-card[open] summary { position: relative; z-index: 2; }
+#portfolio .campaign-card[open] .campaign-list { position: relative; z-index: 1; box-sizing: border-box; min-height: 100%; margin: 0 0 0 -12px; padding: 20px 18px 20px 30px; border: 1px solid #dfe8e4; border-radius: 0 12px 12px 0; background: #eef3f0; transform-origin: left center; box-shadow: 0 14px 30px -24px rgba(25,50,42,.35); overflow: visible; }
+html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px 0 0; padding: 20px 30px 20px 18px; border-radius: 12px 0 0 12px; transform-origin: right center; }
+#portfolio .campaign-item-btn { border-radius: 7px; padding: 10px 11px; color: #283a36; }
+#portfolio .campaign-item-btn + .campaign-item-btn { border-top: 1px solid rgba(25,60,48,.08); }
+#portfolio .campaign-hover-cue { position: absolute; z-index: 6; left: var(--cue-x, 18px); top: var(--cue-y, 18px); display: inline-flex; padding: 8px 11px; border-radius: 7px; background: #fff; color: #173b35; box-shadow: 0 6px 20px rgba(15,35,29,.18); font-size: 12px; font-weight: 650; line-height: 1.2; white-space: nowrap; opacity: 0; transform: translateY(5px) scale(.96); transition: opacity .2s, transform .25s; pointer-events: none; }
+#portfolio .campaign-hover-cue .campaign-toggle-hide { display: none; }
+#portfolio .campaign-card[open] .campaign-hover-cue .campaign-toggle-show { display: none; }
+#portfolio .campaign-card[open] .campaign-hover-cue .campaign-toggle-hide { display: inline; }
+#portfolio .campaign-card summary:hover .campaign-hover-cue, #portfolio .campaign-card summary:focus-visible .campaign-hover-cue { opacity: 1; transform: none; }
+@media (hover: none) { #portfolio .campaign-hover-cue { top: auto; bottom: 14px; left: auto; right: 14px; opacity: 1; transform: none; } }
+@media (max-width: 560px) {
+  #portfolio .campaign-card[open] .campaign-list, html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { min-height: 0; margin: -6px 0 0; padding: 20px 14px 14px; border: 1px solid #dfe8e4; border-radius: 0 0 12px 12px; transform-origin: center top; }
+}
+@media (prefers-reduced-motion: reduce) { #portfolio .campaign-hover-cue { transition: none; } }

@@ -1073,11 +1073,28 @@ document.addEventListener('DOMContentLoaded', function () {
     summary.addEventListener('click', function (event) {
       if (event.target.closest('.card-share-btn')) return;
       event.preventDefault();
+      if (card.dataset.folding === 'true') return;
       finishArchiveAnimations();
+      if (card.open && card.dataset.foldComplete !== 'true' && !archiveReduceMotion.matches && list.animate) {
+        card.dataset.folding = 'true';
+        var mobileClose = window.matchMedia('(max-width: 560px)').matches;
+        var rtlClose = document.documentElement.dir === 'rtl';
+        var end = mobileClose ? 'perspective(1000px) rotateX(-65deg) translateY(-12px)' : 'perspective(1000px) rotateY(' + (rtlClose ? 75 : -75) + 'deg) translateX(' + (rtlClose ? 16 : -16) + 'px)';
+        var closingAnimation = list.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: end }], { duration: 240, easing: 'cubic-bezier(.4,0,.8,.2)', fill: 'forwards' });
+        closingAnimation.finished.then(function () {
+          closingAnimation.cancel();
+          delete card.dataset.folding;
+          if (!card.open) return;
+          card.dataset.foldComplete = 'true';
+          summary.click();
+        });
+        return;
+      }
       var cards = Array.prototype.slice.call(archive.children).filter(function (item) {
         return !item.hasAttribute('data-hidden');
       });
       var before = cards.map(function (item) { return item.getBoundingClientRect(); });
+      delete card.dataset.foldComplete;
       var opening = !card.open;
       archive.querySelectorAll('details.campaign-card[open]').forEach(function (other) {
         if (other !== card) other.open = false;
@@ -1095,15 +1112,18 @@ document.addEventListener('DOMContentLoaded', function () {
         ], { duration: 420, easing: 'cubic-bezier(.22,.7,.2,1)' }));
       });
       if (opening) {
+        var mobile = window.matchMedia('(max-width: 560px)').matches;
+        var rtl = document.documentElement.dir === 'rtl';
+        var start = mobile ? 'perspective(1000px) rotateX(-65deg) translateY(-12px)' : 'perspective(1000px) rotateY(' + (rtl ? 75 : -75) + 'deg) translateX(' + (rtl ? 16 : -16) + 'px)';
         archiveAnimations.push(list.animate([
-          { opacity: 0, transform: 'translateY(12px)' },
-          { opacity: 1, transform: 'translateY(0)' }
-        ], { duration: 340, delay: 70, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
+          { opacity: .25, transform: start },
+          { opacity: 1, transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translate(0,0)' }
+        ], { duration: 520, delay: 30, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'backwards' }));
         list.querySelectorAll('.campaign-item-btn').forEach(function (item, index) {
           archiveAnimations.push(item.animate([
-            { opacity: 0, transform: 'translateY(8px)' },
+            { opacity: 0, transform: 'translateY(7px)' },
             { opacity: 1, transform: 'translateY(0)' }
-          ], { duration: 260, delay: 90 + Math.min(index, 8) * 28, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
+          ], { duration: 260, delay: 160 + Math.min(index, 8) * 24, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
         });
       }
     });
@@ -1683,7 +1703,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function wake() { if (!frameId) { last = performance.now(); frameId = requestAnimationFrame(frame); } }
     function track(event) {
       // Card bounds are stable even as the media tilts.
-      var rect = card.getBoundingClientRect();
+      var rect = (card.matches('details') ? card.querySelector('summary') : card).getBoundingClientRect();
       var mediaHeight = media.offsetHeight;
       var x = event.clientX - rect.left, y = event.clientY - rect.top;
       var now = performance.now(), elapsed = Math.max(8, now - (pointer.last || now - 16)) / 1000;
@@ -1701,6 +1721,27 @@ document.addEventListener('DOMContentLoaded', function () {
     media.addEventListener('pointerleave', function () { pointer.inside = false; pointer.velocity = 0; card.classList.remove('tilt-active'); wake(); });
     motion.addEventListener('change', function () {
       if (!motion.matches) { pointer.inside = false; card.classList.remove('tilt-active'); cancelAnimationFrame(frameId); frameId = 0; media.removeAttribute('style'); }
+    });
+  });
+});
+
+// Collection-only cue follows the pointer and uses the existing translated labels.
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('#portfolio details.campaign-card').forEach(function (card) {
+    var media = card.querySelector('.proj-thumb, .proj-vid-thumb');
+    var show = card.querySelector('.campaign-toggle-show');
+    var hide = card.querySelector('.campaign-toggle-hide');
+    if (!media || !show || !hide) return;
+    var cue = document.createElement('span');
+    cue.className = 'campaign-hover-cue'; cue.setAttribute('aria-hidden', 'true');
+    var showText = show.cloneNode(true), hideText = hide.cloneNode(true);
+    cue.appendChild(showText); cue.appendChild(hideText);
+    media.appendChild(cue);
+    media.addEventListener('pointermove', function (event) {
+      if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+      var bounds = media.getBoundingClientRect();
+      cue.style.setProperty('--cue-x', Math.max(8, Math.min(bounds.width - cue.offsetWidth - 8, event.clientX - bounds.left + 16)) + 'px');
+      cue.style.setProperty('--cue-y', Math.max(8, Math.min(bounds.height - cue.offsetHeight - 8, event.clientY - bounds.top + 16)) + 'px');
     });
   });
 });
