@@ -1105,10 +1105,10 @@ html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px
 html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list {
   width: 100%; height: auto; aspect-ratio: 1 / 1; min-height: 0;
   align-self: start; overflow-y: auto; overscroll-behavior: contain;
-  margin: 0 0 0 -12px; padding: 20px 14px 20px 24px;
+  margin: 0 0 0 -24px; padding: 20px 14px 20px 24px;
   border-radius: 10px; scrollbar-width: thin; scrollbar-color: #9bb6ad transparent;
 }
-html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px 0 0; padding: 20px 24px 20px 14px; }
+html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -24px 0 0; padding: 20px 24px 20px 14px; }
 #portfolio .campaign-list::-webkit-scrollbar { width: 6px; }
 #portfolio .campaign-list::-webkit-scrollbar-track { background: transparent; }
 #portfolio .campaign-list::-webkit-scrollbar-thumb { min-height: 28px; border: 0; border-radius: 99px; background: #9bb6ad; }
@@ -1116,3 +1116,10 @@ html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -12px
   #portfolio .campaign-card[open] .campaign-list,
   html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { width: 100%; aspect-ratio: 1 / 1; margin: -10px 0 0; padding: 24px 14px 14px; border-radius: 10px; }
 }
+
+/* Use the custom slim scrollbar in Chromium and WebKit without end buttons. */
+@supports selector(::-webkit-scrollbar) {
+  #portfolio .campaign-card[open] .campaign-list { scrollbar-width: auto; scrollbar-color: auto; }
+}
+#portfolio .campaign-list::-webkit-scrollbar { width: 5px; }
+#portfolio .campaign-list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
