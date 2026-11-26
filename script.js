@@ -1760,32 +1760,35 @@ document.addEventListener('DOMContentLoaded', function () {
     card.before(slot); slot.appendChild(card);
     return slot;
   });
-  var enabled = window.matchMedia('(min-width: 769px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)');
+  var enabled = window.matchMedia('(min-height: 650px) and (prefers-reduced-motion: no-preference)');
   var pending = 0;
   function update() {
     pending = 0;
     var tops = slots.map(function (slot) { return slot.getBoundingClientRect().top; });
     slots.forEach(function (slot, index) {
       var card = cards[index];
-      if (!enabled.matches) {
+      var mobile = window.matchMedia('(max-width: 768px)').matches;
+      var stacking = enabled.matches && (mobile || window.innerHeight >= 700) && !grid.querySelector('.is-desc-expanded');
+      if (!stacking) {
         card.style.removeProperty('transform'); card.style.removeProperty('--featured-dim'); card.inert = false;
         return;
       }
       var depth = 0;
       for (var next = index + 1; next < slots.length; next++) {
-        var pin = 110 + (next - 1) * 14;
+        var pin = (mobile ? 72 : 110) + (next - 1) * 14;
         var span = Math.max(1, slots[next - 1].offsetHeight - 14);
         depth += Math.max(0, Math.min(1, (pin + slots[next - 1].offsetHeight - tops[next]) / span));
       }
       var scale = Math.max(.88, 1 - depth * .04);
       card.style.transform = depth > .001 ? 'scale(' + scale.toFixed(4) + ')' : '';
       card.style.setProperty('--featured-dim', Math.min(.15, depth * .05).toFixed(3));
-      card.inert = index < slots.length - 1 && tops[index + 1] <= 110 + index * 14 + 18;
+      card.inert = index < slots.length - 1 && tops[index + 1] <= (mobile ? 72 : 110) + index * 14 + 18;
     });
   }
   function schedule() { if (!pending) pending = requestAnimationFrame(update); }
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
+  grid.addEventListener('click', schedule);
   enabled.addEventListener('change', schedule);
   if (window.ResizeObserver) { var observer = new ResizeObserver(schedule); slots.forEach(function (slot) { observer.observe(slot); }); }
   schedule();

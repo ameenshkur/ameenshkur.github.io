@@ -1200,3 +1200,30 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 @media (hover: none) { #featured .card-share-btn { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) { #featured .card-share-btn { transition: none; } }
+
+/* Phone layouts: keep collection details in the document flow and retain the
+   featured card stack without trapping expanded content beneath other cards. */
+@media (max-width: 560px) {
+  #portfolio .campaign-card[open] { display: block; }
+  #portfolio .campaign-card[open] .campaign-list,
+  html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list {
+    width: 100%; height: auto; aspect-ratio: auto; max-height: none;
+    overflow: visible; margin: 14px 0 0; padding: 12px;
+    border: 1px solid #dfe8e4; border-radius: 10px;
+  }
+  #portfolio .campaign-item-btn { min-height: 48px; }
+}
+@media (max-width: 768px) {
+  #featured .featured-stack-slot { margin-bottom: 28px; }
+  #featured .featured-copy { padding: 22px; }
+  #featured .featured-title { max-width: none; font-size: clamp(21px, 6vw, 25px); }
+  #featured .featured-desc { max-width: none; line-height: 1.6; }
+  #featured .featured-media, #featured .featured-media .proj-thumb,
+  #featured .featured-media .proj-vid-thumb { aspect-ratio: 16 / 9; }
+  .card-desc-toggle { color: var(--teal-dark); padding: 4px 2px; }
+  #portfolio .portfolio-grid { row-gap: 32px; }
+}
+@media (max-width: 768px) and (min-height: 650px) and (prefers-reduced-motion: no-preference) {
+  #featured .featured-stack-slot { position: sticky; top: calc(72px + var(--stack-offset)); margin-bottom: 64px; }
+  #featured .featured-grid:has(.is-desc-expanded) .featured-stack-slot { position: relative; top: auto; }
+}
