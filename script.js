@@ -1566,3 +1566,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+// Pointer-relative movement stays on the media, leaving grid layout untouched.
+document.addEventListener('DOMContentLoaded', function () {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
+  document.querySelectorAll('#portfolio .proj-card').forEach(function (card) {
+    var media = card.querySelector('.proj-thumb, .proj-vid-thumb');
+    if (!media) return;
+    var cue = document.createElement('span');
+    cue.className = 'project-open-cue';
+    cue.setAttribute('aria-hidden', 'true');
+    cue.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    media.appendChild(cue);
+    var frame = 0;
+    card.addEventListener('pointermove', function (event) {
+      var rect = media.getBoundingClientRect();
+      var x = Math.max(-.5, Math.min(.5, (event.clientX - rect.left) / rect.width - .5));
+      var y = Math.max(-.5, Math.min(.5, (event.clientY - rect.top) / rect.height - .5));
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(function () {
+        media.style.setProperty('--card-rotate-x', (-y * 4) + 'deg');
+        media.style.setProperty('--card-rotate-y', (x * 4) + 'deg');
+        media.style.setProperty('--image-x', (-x * 6) + 'px');
+        media.style.setProperty('--image-y', (-y * 6) + 'px');
+      });
+    });
+    card.addEventListener('pointerleave', function () {
+      cancelAnimationFrame(frame);
+      ['--card-rotate-x', '--card-rotate-y', '--image-x', '--image-y'].forEach(function (name) { media.style.removeProperty(name); });
+    });
+  });
+});

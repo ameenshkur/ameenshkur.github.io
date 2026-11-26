@@ -1022,3 +1022,38 @@ html[dir="rtl"] #portfolio .card-share-btn { right: auto; left: 12px; }
   #portfolio .campaign-card[open] { display: block; }
   #portfolio .campaign-card[open] .campaign-list { margin-top: 14px; padding: 6px 0; border-inline-start: 0; border-top: 1px solid var(--border); }
 }
+
+/* Pointer-led artwork motion, inspired by React Bits' Tilted Card. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  #portfolio .proj-thumb, #portfolio .proj-vid-thumb {
+    transform: perspective(1100px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg)) translateY(var(--card-lift, 0px));
+    transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s cubic-bezier(.16,1,.3,1);
+  }
+  #portfolio .proj-card:hover .proj-thumb, #portfolio .proj-card:hover .proj-vid-thumb {
+    --card-lift: -5px;
+    box-shadow: 0 18px 30px -18px rgba(25,43,39,.42);
+  }
+  #portfolio .proj-thumb img, #portfolio .proj-vid-thumb img {
+    transform: scale(1.001) translate3d(0,0,0);
+    transition: transform .6s cubic-bezier(.16,1,.3,1), opacity .3s;
+  }
+  #portfolio .proj-card:hover .proj-thumb img, #portfolio .proj-card:hover .proj-vid-thumb img {
+    transform: scale(1.055) translate3d(var(--image-x, 0px), var(--image-y, 0px), 0);
+  }
+  #portfolio .proj-thumb::after { background: linear-gradient(0deg, rgba(12,25,23,.22), transparent 42%); opacity: 0; transition: opacity .4s; }
+  #portfolio .proj-card:hover .proj-thumb::after { opacity: 1; }
+  #portfolio .project-open-cue {
+    position: absolute; z-index: 3; inset-inline-end: 14px; bottom: 14px;
+    display: grid; place-items: center; width: 38px; height: 38px;
+    border-radius: 50%; background: #fff; color: #173d38;
+    opacity: 0; transform: translate(-8px, 8px) scale(.82);
+    transition: opacity .3s, transform .45s cubic-bezier(.16,1,.3,1);
+    pointer-events: none;
+  }
+  #portfolio .project-open-cue svg { width: 17px; height: 17px; }
+  #portfolio .proj-card:hover .project-open-cue, #portfolio .proj-card:focus-within .project-open-cue { opacity: 1; transform: translate(0,0) scale(1); }
+  #portfolio .proj-card:hover .proj-title { color: var(--teal-dark); }
+  #portfolio .proj-title { transition: color .3s; }
+}
+.project-open-cue { display: none; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) { #portfolio .project-open-cue { display: grid; } }
