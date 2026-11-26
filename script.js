@@ -992,75 +992,53 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ── Expandable campaign card animation ───────────────────
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var archiveReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var archive = document.querySelector('#portfolio .portfolio-grid');
+  var archiveAnimations = [];
+  function finishArchiveAnimations() {
+    archiveAnimations.forEach(function (animation) { animation.finish(); });
+    archiveAnimations = [];
+  }
   document.querySelectorAll('details.campaign-card').forEach(function (card) {
     var summary = card.querySelector('summary');
     var list = card.querySelector('.campaign-list');
-    var animation = null;
-    if (!summary || !list) return;
-
-    function finish(open) {
-      card.open = open;
-      card.classList.remove('is-animating');
-      list.style.height = open ? 'auto' : '';
-      list.style.opacity = '';
-      list.style.overflow = '';
-      animation = null;
-    }
-
-    function measureListHeight() {
-      var previousHeight = list.style.height;
-      var previousOverflow = list.style.overflow;
-      list.style.height = 'auto';
-      list.style.overflow = 'visible';
-      var height = list.getBoundingClientRect().height;
-      list.style.height = previousHeight;
-      list.style.overflow = previousOverflow;
-      return height;
-    }
-
-    function toggleCard() {
+    if (!summary || !list || !archive) return;
+    summary.addEventListener('click', function (event) {
+      if (event.target.closest('.card-share-btn')) return;
+      event.preventDefault();
+      finishArchiveAnimations();
+      var cards = Array.prototype.slice.call(archive.children).filter(function (item) {
+        return !item.hasAttribute('data-hidden');
+      });
+      var before = cards.map(function (item) { return item.getBoundingClientRect(); });
       var opening = !card.open;
-
-      if (animation) return;
-      if (reduceMotion || typeof list.animate !== 'function') {
-        card.open = opening;
-        return;
-      }
-
-      card.classList.add('is-animating');
-      list.style.overflow = 'hidden';
-
+      archive.querySelectorAll('details.campaign-card[open]').forEach(function (other) {
+        if (other !== card) other.open = false;
+      });
+      card.open = opening;
+      if (archiveReduceMotion.matches || !card.animate) return;
+      cards.forEach(function (item, index) {
+        var after = item.getBoundingClientRect();
+        var x = before[index].left - after.left;
+        var y = before[index].top - after.top;
+        if (Math.abs(x) < 1 && Math.abs(y) < 1) return;
+        archiveAnimations.push(item.animate([
+          { transform: 'translate(' + x + 'px,' + y + 'px)' },
+          { transform: 'translate(0,0)' }
+        ], { duration: 420, easing: 'cubic-bezier(.22,.7,.2,1)' }));
+      });
       if (opening) {
-        card.open = true;
-        var openHeight = measureListHeight();
-        list.style.opacity = '0';
-        list.style.height = '0px';
-        animation = list.animate([
-          { height: '0px', opacity: 0 },
-          { height: openHeight + 'px', opacity: 1 }
-        ], { duration: 260, easing: 'cubic-bezier(.22,.61,.36,1)' });
-        list.style.height = openHeight + 'px';
-        list.style.opacity = '1';
-      } else {
-        var closeHeight = list.getBoundingClientRect().height;
-        list.style.height = closeHeight + 'px';
-        list.style.opacity = '1';
-        animation = list.animate([
-          { height: closeHeight + 'px', opacity: 1 },
-          { height: '0px', opacity: 0 }
-        ], { duration: 220, easing: 'cubic-bezier(.4,0,.2,1)' });
-        list.style.height = '0px';
-        list.style.opacity = '0';
+        archiveAnimations.push(list.animate([
+          { opacity: 0, transform: 'translateY(12px)' },
+          { opacity: 1, transform: 'translateY(0)' }
+        ], { duration: 340, delay: 70, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
+        list.querySelectorAll('.campaign-item-btn').forEach(function (item, index) {
+          archiveAnimations.push(item.animate([
+            { opacity: 0, transform: 'translateY(8px)' },
+            { opacity: 1, transform: 'translateY(0)' }
+          ], { duration: 260, delay: 90 + Math.min(index, 8) * 28, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
+        });
       }
-
-      animation.onfinish = function () { finish(opening); };
-      animation.oncancel = function () { finish(card.open); };
-    }
-
-    summary.addEventListener('click', function (e) {
-      e.preventDefault();
-      toggleCard();
     });
   });
 

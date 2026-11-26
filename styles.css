@@ -1000,3 +1000,25 @@ html.lenis-smooth { scroll-behavior: auto; }
 @media (prefers-reduced-motion: reduce) { #portfolio .filter-indicator, #portfolio .proj-thumb img, #portfolio .card-share-btn { transition: none; } }
 html[dir="rtl"] #portfolio .gallery-badge { left: auto; right: 12px; }
 html[dir="rtl"] #portfolio .card-share-btn { right: auto; left: 12px; }
+
+/* Collection panels share a row with their artwork on wider screens. */
+#portfolio .portfolio-grid { grid-auto-flow: row dense; }
+#portfolio .proj-card:nth-child(8n + 1) { grid-column: auto; }
+#portfolio .proj-card:nth-child(8n + 1) .proj-thumb,
+#portfolio .proj-card:nth-child(8n + 1) .proj-vid-thumb { aspect-ratio: 1 / 1; }
+#portfolio .proj-thumb img { object-fit: cover; }
+#portfolio .proj-thumb img[src$=".svg"] { object-fit: contain; }
+#portfolio .campaign-card { grid-column: 1; }
+#portfolio .campaign-card[open] { grid-column: 1 / span 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; align-items: start; }
+#portfolio .campaign-card[open] summary { min-width: 0; }
+#portfolio .campaign-card[open] .campaign-list { margin: 0; padding: 4px 0; border-top: 0; border-inline-start: 1px solid var(--border); padding-inline-start: 18px; }
+#portfolio .campaign-item-btn { min-height: 44px; line-height: 1.35; }
+#portfolio .campaign-toggle { gap: 5px; }
+@media (max-width: 800px) {
+  #portfolio .campaign-card[open] { column-gap: 18px; }
+}
+@media (max-width: 560px) {
+  #portfolio .campaign-card, #portfolio .campaign-card[open] { grid-column: auto; }
+  #portfolio .campaign-card[open] { display: block; }
+  #portfolio .campaign-card[open] .campaign-list { margin-top: 14px; padding: 6px 0; border-inline-start: 0; border-top: 1px solid var(--border); }
+}
