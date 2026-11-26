@@ -1547,3 +1547,44 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 }());
+
+// Keep the archive's controls accessible and its selection indicator in sync.
+document.addEventListener('DOMContentLoaded', function () {
+  var filters = document.querySelector('#portfolio .filter-tabs');
+  if (filters) {
+    var indicator = document.createElement('span');
+    indicator.className = 'filter-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    filters.prepend(indicator);
+    function updateIndicator() {
+      var active = filters.querySelector('.filter-tab.active');
+      if (!active) return;
+      indicator.style.width = active.offsetWidth + 'px';
+      indicator.style.transform = 'translateX(' + active.offsetLeft + 'px)';
+      filters.querySelectorAll('.filter-tab').forEach(function (tab) {
+        tab.setAttribute('aria-pressed', tab === active ? 'true' : 'false');
+      });
+    }
+    filters.addEventListener('click', function () { requestAnimationFrame(updateIndicator); });
+    window.addEventListener('resize', updateIndicator);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateIndicator);
+    updateIndicator();
+  }
+  document.querySelectorAll('#portfolio .proj-card:not(details)').forEach(function (card) {
+    var media = card.querySelector('.proj-thumb, .proj-vid-thumb');
+    if (!media) return;
+    var title = card.querySelector('.proj-title');
+    media.tabIndex = 0;
+    media.setAttribute('role', 'button');
+    media.setAttribute('aria-label', (title ? title.textContent.trim() : 'Project') + ' — open project');
+    media.addEventListener('keydown', function (event) {
+      if (event.target !== media || (event.key !== 'Enter' && event.key !== ' ')) return;
+      event.preventDefault();
+      media.click();
+    });
+    var body = card.querySelector('.proj-body');
+    if (body && !card.hasAttribute('onclick')) body.addEventListener('click', function (event) {
+      if (!event.target.closest('a, button')) media.click();
+    });
+  });
+});
