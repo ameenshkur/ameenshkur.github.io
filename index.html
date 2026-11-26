@@ -11,7 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg"/>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="init.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261126-gallery-viewer"/>
+  <link rel="stylesheet" href="styles.css?v=20261126-gallery-focus"/>
 </head>
 <body>
 
@@ -830,7 +830,7 @@
 </div>
 
 <!-- ═══ LIGHTBOX ══════════════════════════════════════════════ -->
-<div id="lb-modal" class="lb" onclick="lb.clickOutside(event)" role="dialog" aria-modal="true" aria-label="Project viewer">
+<div id="lb-modal" class="lb" onclick="lb.clickOutside(event)" role="dialog" aria-modal="true" aria-label="Project viewer" tabindex="-1">
   <button type="button" class="lb-close" onclick="lb.close()" aria-label="Close">
     <i data-lucide="x" style="width:24px;height:24px"></i>
   </button>
@@ -861,7 +861,7 @@
 
 <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
 <script src="assets/vendor/lenis/lenis.min.js"></script>
-<script src="script.js?v=20261126-gallery-viewer"></script>
+<script src="script.js?v=20261126-gallery-focus"></script>
 <script src="dot-grid.js?v=20261123"></script>
 
 </body>

@@ -51,6 +51,7 @@ var lb = (function () {
   var touchStartX = 0, touchStartY = 0;
   var coverPreloads = {};
   var loadToken = 0, returnFocus = null, projectLabel = 'Project image';
+  var keyboardInteraction = false;
 
   function init() {
     modal     = document.getElementById('lb-modal');
@@ -67,7 +68,9 @@ var lb = (function () {
     loading = document.getElementById('lb-loading');
     controls = document.getElementById('lb-gallery-controls');
 
+    document.addEventListener('pointerdown', function () { keyboardInteraction = false; }, true);
     document.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab' || e.key === 'Enter' || e.key === ' ') keyboardInteraction = true;
       if (!modal.classList.contains('open')) return;
       if (e.key === 'Escape')     close();
       if (e.key === 'ArrowLeft' && imgPane.style.display !== 'none') { e.preventDefault(); nav(-1); }
@@ -75,7 +78,7 @@ var lb = (function () {
       if (e.key === 'Tab') {
         var focusable = Array.prototype.slice.call(modal.querySelectorAll('button:not([disabled]), iframe')).filter(function (el) { return el.offsetParent !== null; });
         if (!focusable.length) return;
-        if (e.shiftKey && document.activeElement === focusable[0]) { e.preventDefault(); focusable[focusable.length - 1].focus(); }
+        if (e.shiftKey && (document.activeElement === modal || document.activeElement === focusable[0])) { e.preventDefault(); focusable[focusable.length - 1].focus(); }
         else if (!e.shiftKey && document.activeElement === focusable[focusable.length - 1]) { e.preventDefault(); focusable[0].focus(); }
       }
     });
@@ -247,9 +250,9 @@ var lb = (function () {
   }
 
   function open() {
-    returnFocus = document.activeElement;
+    returnFocus = keyboardInteraction ? document.activeElement : null;
     modal.classList.add('open');
-    modal.querySelector('.lb-close').focus({ preventScroll: true });
+    modal.focus({ preventScroll: true });
     document.body.style.overflow = 'hidden';
     showSwipeHint();
   }
@@ -259,6 +262,7 @@ var lb = (function () {
     ++loadToken; loading.textContent = '';
     stage.querySelectorAll('.lb-image-out').forEach(function (node) { node.remove(); });
     if (returnFocus && returnFocus.isConnected) returnFocus.focus({ preventScroll: true });
+    else if (modal.contains(document.activeElement) || document.activeElement === modal) document.activeElement.blur();
     document.body.style.overflow = '';
     iframe.src = '';
     img.removeAttribute('src');
