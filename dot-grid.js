@@ -170,6 +170,7 @@ function initDotGrid() {
     gl.bindVertexArray(null);
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const phoneMotion = window.matchMedia('(hover: none) and (pointer: coarse) and (max-width: 900px)');
     const view = { width: 0, height: 0, left: 0, top: 0, ratio: 1 };
     const grid = { count: 0, cols: 1, rows: 1, cell: 1, centerX: 0, centerY: 0, reach: 1 };
     let rest = new Float32Array(0);
@@ -383,12 +384,17 @@ function initDotGrid() {
       const introAge = introStart === null ? Infinity : introStart < 0 ? 0 : (now - introStart) / 1000;
       const introFront = introAge * grid.reach * 1.25;
       const introBand = grid.cell * 4;
+      const ambient = phoneMotion.matches && !reduced;
+      const time = now / 1000;
       for (let i = 0; i < grid.count; i++) {
         const index = i * 2;
         const source = i * 4;
-        const x = rest[index] + offset[index] + wave[source];
-        const y = rest[index + 1] + offset[index + 1] + wave[source + 1];
-        let glowing = energy[i];
+        const phase = rest[index] * 0.008 + rest[index + 1] * 0.005;
+        const driftX = ambient ? Math.sin(time * 0.42 + phase) * 2.4 : 0;
+        const driftY = ambient ? Math.sin(time * 0.34 + phase + 1.2) * 2.0 : 0;
+        const x = rest[index] + offset[index] + wave[source] + driftX;
+        const y = rest[index + 1] + offset[index + 1] + wave[source + 1] + driftY;
+        let glowing = ambient ? Math.max(energy[i], (0.5 + 0.5 * Math.sin(time * 0.38 + phase)) * 0.12) : energy[i];
         if (pointer.presence > 0.001) {
           const distance = Math.hypot(x - pointer.x, y - pointer.y);
           if (distance < radius)
@@ -451,13 +457,13 @@ function initDotGrid() {
 
     const frame = now => {
       raf = 0;
-      if (settingsRef.current.paused || !visible) return;
+      if (settingsRef.current.paused || !visible || document.hidden) return;
       if (introStart !== null && introStart < 0) introStart = now;
       const dt = Math.min(0.05, (now - last) / 1000 || 0);
       last = now;
-      step(dt, now);
+      if (!phoneMotion.matches) step(dt, now);
       render(now);
-      if (!settled(now)) raf = requestAnimationFrame(frame);
+      if (!settled(now) || (phoneMotion.matches && !reduced)) raf = requestAnimationFrame(frame);
     };
 
     const wake = () => {
@@ -474,7 +480,7 @@ function initDotGrid() {
     };
 
     const onMove = event => {
-      if (!settingsRef.current.mouseInteraction) return;
+      if (!settingsRef.current.mouseInteraction || phoneMotion.matches || event.pointerType === 'touch') return;
       const [x, y] = locate(event);
       const inside = x >= 0 && y >= 0 && x <= view.width && y <= view.height;
       const time = event.timeStamp || performance.now();
@@ -508,7 +514,7 @@ function initDotGrid() {
     };
 
     const onDown = event => {
-      if (!settingsRef.current.clickShock || reduced) return;
+      if (!settingsRef.current.clickShock || reduced || phoneMotion.matches || event.pointerType === 'touch') return;
       const [x, y] = locate(event);
       if (x < 0 || y < 0 || x > view.width || y > view.height) return;
       shocks.push({ x, y, start: performance.now() });
@@ -516,6 +522,12 @@ function initDotGrid() {
       wake();
     };
 
+    const onPhoneModeChange = () => {
+      pointer.inside = false; pointer.vx = 0; pointer.vy = 0; pointer.presence = 0;
+      shocks.length = 0; offset.fill(0); velocity.fill(0); wave.fill(0); energy.fill(0);
+      wake();
+    };
+    phoneMotion.addEventListener('change', onPhoneModeChange);
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerdown', onDown, { passive: true });
     window.addEventListener('pointerout', onOut);
@@ -562,6 +574,7 @@ function initDotGrid() {
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
+      phoneMotion.removeEventListener('change', onPhoneModeChange);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointerout', onOut);
