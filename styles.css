@@ -1152,3 +1152,28 @@ html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -24px
   #featured .featured-title { font-size: 23px; }
 }
 @media (prefers-reduced-motion: reduce) { #featured .featured-card { transition: none; } }
+
+/* Keep section rhythm consistent and let the stack finish at its last card. */
+#services, #featured, #portfolio, #contact { padding-block: clamp(64px, 6vw, 84px); }
+#featured { padding-bottom: 48px; }
+#portfolio { padding-top: 48px; }
+#services .section-heading, #featured .section-heading, #portfolio .section-heading, #contact .section-heading { margin-bottom: 36px; }
+#featured .featured-intro { margin-top: -20px; margin-bottom: 32px; }
+#featured .featured-stack-slot:last-child { margin-bottom: 0; }
+#portfolio .filter-tabs { margin-bottom: 30px; }
+#portfolio .portfolio-grid { row-gap: 34px; }
+@media (min-width: 769px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  #featured .featured-grid { padding-bottom: 0; }
+  #featured .featured-stack-slot:last-child { margin-bottom: 0; }
+}
+@media (max-width: 768px) {
+  #services, #featured, #portfolio, #contact { padding-block: 56px; }
+  #featured { padding-bottom: 36px; }
+  #portfolio { padding-top: 36px; }
+  #services .section-heading, #featured .section-heading, #portfolio .section-heading, #contact .section-heading { margin-bottom: 28px; }
+  #featured .featured-intro { margin-top: -12px; margin-bottom: 26px; }
+  #featured .featured-stack-slot { margin-bottom: 24px; }
+  #featured .featured-stack-slot:last-child { margin-bottom: 0; }
+  #portfolio .filter-tabs { margin-bottom: 24px; }
+  #portfolio .portfolio-grid { row-gap: 28px; }
+}
