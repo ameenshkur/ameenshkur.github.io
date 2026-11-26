@@ -11,7 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg"/>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="init.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261126-tilt-seven"/>
+  <link rel="stylesheet" href="styles.css?v=20261126-gallery-viewer"/>
 </head>
 <body>
 
@@ -830,20 +830,26 @@
 </div>
 
 <!-- ═══ LIGHTBOX ══════════════════════════════════════════════ -->
-<div id="lb-modal" class="lb" onclick="lb.clickOutside(event)" role="dialog" aria-modal="true">
+<div id="lb-modal" class="lb" onclick="lb.clickOutside(event)" role="dialog" aria-modal="true" aria-label="Project viewer">
   <button type="button" class="lb-close" onclick="lb.close()" aria-label="Close">
     <i data-lucide="x" style="width:24px;height:24px"></i>
   </button>
   <!-- image pane -->
   <div class="lb-img-pane" id="lb-img-pane">
-    <img id="lb-img" src="" alt=""/>
-    <button type="button" class="lb-arr lb-prev" id="lb-prev" onclick="lb.nav(-1)" aria-label="Previous">
-      <i data-lucide="chevron-left" style="width:24px;height:24px"></i>
-    </button>
-    <button type="button" class="lb-arr lb-next" id="lb-next" onclick="lb.nav(1)" aria-label="Next">
-      <i data-lucide="chevron-right" style="width:24px;height:24px"></i>
-    </button>
-    <div class="lb-counter" id="lb-counter"></div>
+    <div class="lb-stage" id="lb-stage">
+      <img id="lb-img" src="" alt=""/>
+      <span class="lb-loading" id="lb-loading" role="status" aria-live="polite"></span>
+    </div>
+    <div class="lb-gallery-controls" id="lb-gallery-controls">
+      <button type="button" class="lb-arr lb-prev" id="lb-prev" onclick="lb.nav(-1)" aria-label="Previous image">
+        <i data-lucide="arrow-left" style="width:20px;height:20px"></i>
+      </button>
+      <div class="lb-counter" id="lb-counter" aria-live="polite"></div>
+      <button type="button" class="lb-arr lb-next" id="lb-next" onclick="lb.nav(1)" aria-label="Next image">
+        <i data-lucide="arrow-right" style="width:20px;height:20px"></i>
+      </button>
+    </div>
+    <div class="lb-thumbnails" id="lb-thumbnails" aria-label="Choose an image"></div>
   </div>
   <!-- video pane -->
   <div class="lb-vid-pane" id="lb-vid-pane" style="display:none">
@@ -855,7 +861,7 @@
 
 <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
 <script src="assets/vendor/lenis/lenis.min.js"></script>
-<script src="script.js?v=20261126-tilt-seven"></script>
+<script src="script.js?v=20261126-gallery-viewer"></script>
 <script src="dot-grid.js?v=20261123"></script>
 
 </body>
