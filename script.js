@@ -1745,3 +1745,48 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+// A window-scrolling adaptation of React Bits ScrollStack.
+document.addEventListener('DOMContentLoaded', function () {
+  var grid = document.querySelector('#featured .featured-grid');
+  if (!grid) return;
+  var cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > .featured-card'));
+  if (!cards.length) return;
+  var slots = cards.map(function (card, index) {
+    var slot = document.createElement('div');
+    slot.className = 'featured-stack-slot';
+    slot.style.setProperty('--stack-offset', (index * 14) + 'px');
+    slot.style.zIndex = index + 1;
+    card.before(slot); slot.appendChild(card);
+    return slot;
+  });
+  var enabled = window.matchMedia('(min-width: 769px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)');
+  var pending = 0;
+  function update() {
+    pending = 0;
+    var tops = slots.map(function (slot) { return slot.getBoundingClientRect().top; });
+    slots.forEach(function (slot, index) {
+      var card = cards[index];
+      if (!enabled.matches) {
+        card.style.removeProperty('transform'); card.style.removeProperty('--featured-dim'); card.inert = false;
+        return;
+      }
+      var depth = 0;
+      for (var next = index + 1; next < slots.length; next++) {
+        var pin = 110 + (next - 1) * 14;
+        var span = Math.max(1, slots[next - 1].offsetHeight - 14);
+        depth += Math.max(0, Math.min(1, (pin + slots[next - 1].offsetHeight - tops[next]) / span));
+      }
+      var scale = Math.max(.88, 1 - depth * .04);
+      card.style.transform = depth > .001 ? 'scale(' + scale.toFixed(4) + ')' : '';
+      card.style.setProperty('--featured-dim', Math.min(.22, depth * .075).toFixed(3));
+      card.inert = index < slots.length - 1 && tops[index + 1] <= 110 + index * 14 + 18;
+    });
+  }
+  function schedule() { if (!pending) pending = requestAnimationFrame(update); }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  enabled.addEventListener('change', schedule);
+  if (window.ResizeObserver) { var observer = new ResizeObserver(schedule); slots.forEach(function (slot) { observer.observe(slot); }); }
+  schedule();
+});
