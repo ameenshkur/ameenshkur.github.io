@@ -1567,33 +1567,83 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Pointer-relative movement stays on the media, leaving grid layout untouched.
+// TiltedCard interaction adapted from the supplied React Bits component.
 document.addEventListener('DOMContentLoaded', function () {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
+  var motion = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  if (!motion.matches) return;
+  var clamp = function (n, min, max) { return Math.min(max, Math.max(min, n)); };
+  function step(state, key, target, omega, damping, dt) {
+    var velocity = 'v' + key;
+    var count = Math.max(1, Math.ceil(dt / (1 / 240)));
+    var h = dt / count;
+    for (var i = 0; i < count; i++) {
+      state[velocity] += (omega * omega * (target - state[key]) - 2 * damping * omega * state[velocity]) * h;
+      state[key] += state[velocity] * h;
+    }
+    if (Math.abs(target - state[key]) < .001 && Math.abs(state[velocity]) < .01) {
+      state[key] = target; state[velocity] = 0; return false;
+    }
+    return true;
+  }
   document.querySelectorAll('#portfolio .proj-card').forEach(function (card) {
     var media = card.querySelector('.proj-thumb, .proj-vid-thumb');
-    if (!media) return;
-    var cue = document.createElement('span');
-    cue.className = 'project-open-cue';
-    cue.setAttribute('aria-hidden', 'true');
-    cue.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-    media.appendChild(cue);
-    var frame = 0;
-    card.addEventListener('pointermove', function (event) {
-      var rect = media.getBoundingClientRect();
-      var x = Math.max(-.5, Math.min(.5, (event.clientX - rect.left) / rect.width - .5));
-      var y = Math.max(-.5, Math.min(.5, (event.clientY - rect.top) / rect.height - .5));
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(function () {
-        media.style.setProperty('--card-rotate-x', (-y * 4) + 'deg');
-        media.style.setProperty('--card-rotate-y', (x * 4) + 'deg');
-        media.style.setProperty('--image-x', (-x * 6) + 'px');
-        media.style.setProperty('--image-y', (-y * 6) + 'px');
-      });
+    var title = card.querySelector('.proj-title');
+    if (!media || !title) return;
+    var glare = document.createElement('span');
+    glare.className = 'tilted-glare'; glare.setAttribute('aria-hidden', 'true');
+    media.appendChild(glare);
+    // Put the caption outside the transformed surface so it can follow the pointer.
+    var caption = document.createElement('span');
+    caption.className = 'tilted-caption'; caption.setAttribute('aria-hidden', 'true');
+    card.appendChild(caption);
+    var state = { rx: 0, vrx: 0, ry: 0, vry: 0, lift: 0, vlift: 0, tip: 0, vtip: 0 };
+    var pointer = { x: 0, y: 0, nx: 0, ny: 0, velocity: 0, last: 0, inside: false };
+    var frameId = 0, last = 0, captionX = 0, captionY = 0;
+    function frame(now) {
+      frameId = 0;
+      var dt = clamp((now - last) / 1000 || 0, 0, .05); last = now;
+      var active = pointer.inside;
+      var busy = step(state, 'rx', active ? -pointer.ny * 12 : 0, 7.6, .82, dt);
+      busy = step(state, 'ry', active ? pointer.nx * 12 : 0, 7.6, .82, dt) || busy;
+      busy = step(state, 'lift', active ? 1 : 0, 7.6, .85, dt) || busy;
+      busy = step(state, 'tip', active ? clamp(-pointer.velocity * .012, -14, 14) : 0, 18, .62, dt) || busy;
+      pointer.velocity *= Math.exp(-dt / .08);
+      var follow = 1 - Math.exp(-dt / .035);
+      captionX += (pointer.x - captionX) * follow; captionY += (pointer.y - captionY) * follow;
+      if (active && Math.abs(pointer.x - captionX) + Math.abs(pointer.y - captionY) > .2) busy = true;
+      media.style.transform = 'perspective(800px) rotateX(' + state.rx.toFixed(3) + 'deg) rotateY(' + state.ry.toFixed(3) + 'deg) scale(' + (1 + .05 * state.lift).toFixed(4) + ')';
+      media.style.setProperty('--tilt-x', (50 + state.ry / 12 * 46).toFixed(1) + '%');
+      media.style.setProperty('--tilt-y', (50 - state.rx / 12 * 46).toFixed(1) + '%');
+      media.style.setProperty('--tilt-glare', (0.5 * Math.max(state.lift, Math.min(1, Math.hypot(state.rx, state.ry) / 12))).toFixed(3));
+      media.style.setProperty('--tilt-shadow-x', (-Math.sin(state.ry * Math.PI / 180) * 22).toFixed(1) + 'px');
+      media.style.setProperty('--tilt-shadow-y', (12 + 16 * state.lift + Math.sin(state.rx * Math.PI / 180) * 18).toFixed(1) + 'px');
+      media.style.setProperty('--tilt-shadow-opacity', (.12 + .12 * state.lift).toFixed(3));
+      media.style.setProperty('--tilt-image-x', (-Math.sin(state.ry * Math.PI / 180) * 24).toFixed(2) + 'px');
+      media.style.setProperty('--tilt-image-y', (Math.sin(state.rx * Math.PI / 180) * 24).toFixed(2) + 'px');
+      caption.style.transform = 'translate3d(' + captionX.toFixed(1) + 'px,' + captionY.toFixed(1) + 'px,0) rotate(' + state.tip.toFixed(2) + 'deg)';
+      if (busy) frameId = requestAnimationFrame(frame);
+    }
+    function wake() { if (!frameId) { last = performance.now(); frameId = requestAnimationFrame(frame); } }
+    function track(event) {
+      // Card bounds are stable even as the media tilts.
+      var rect = card.getBoundingClientRect();
+      var mediaHeight = media.offsetHeight;
+      var x = event.clientX - rect.left, y = event.clientY - rect.top;
+      var now = performance.now(), elapsed = Math.max(8, now - (pointer.last || now - 16)) / 1000;
+      pointer.velocity += ((x - pointer.x) / elapsed - pointer.velocity) * .5;
+      pointer.last = now; pointer.x = x; pointer.y = y;
+      pointer.nx = clamp((x - rect.width / 2) / (rect.width / 2), -1, 1);
+      pointer.ny = clamp((y - mediaHeight / 2) / (mediaHeight / 2), -1, 1);
+    }
+    media.addEventListener('pointerenter', function (event) {
+      if (!motion.matches || (event.pointerType !== 'mouse' && event.pointerType !== 'pen')) return;
+      pointer.inside = true; track(event); captionX = pointer.x; captionY = pointer.y; pointer.velocity = 0;
+      caption.textContent = title.textContent.trim(); card.classList.add('tilt-active'); wake();
     });
-    card.addEventListener('pointerleave', function () {
-      cancelAnimationFrame(frame);
-      ['--card-rotate-x', '--card-rotate-y', '--image-x', '--image-y'].forEach(function (name) { media.style.removeProperty(name); });
+    media.addEventListener('pointermove', function (event) { if (pointer.inside) { track(event); wake(); } });
+    media.addEventListener('pointerleave', function () { pointer.inside = false; pointer.velocity = 0; card.classList.remove('tilt-active'); wake(); });
+    motion.addEventListener('change', function () {
+      if (!motion.matches) { pointer.inside = false; card.classList.remove('tilt-active'); cancelAnimationFrame(frameId); frameId = 0; media.removeAttribute('style'); }
     });
   });
 });
