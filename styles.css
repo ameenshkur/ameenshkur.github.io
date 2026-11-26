@@ -1074,3 +1074,6 @@ html[dir="rtl"] #portfolio .card-share-btn { right: auto; left: 12px; }
 .lb-stage { align-self: stretch; }
 
 .lb:focus { outline: none; }
+
+/* Text selection follows the portfolio palette. */
+::selection { background: #a8ded4; color: #102e2b; }

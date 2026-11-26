@@ -73,8 +73,8 @@ var lb = (function () {
       if (e.key === 'Tab' || e.key === 'Enter' || e.key === ' ') keyboardInteraction = true;
       if (!modal.classList.contains('open')) return;
       if (e.key === 'Escape')     close();
-      if (e.key === 'ArrowLeft' && imgPane.style.display !== 'none') { e.preventDefault(); nav(-1); }
-      if (e.key === 'ArrowRight' && imgPane.style.display !== 'none') { e.preventDefault(); nav(1); }
+      if (e.key === 'ArrowLeft' && imgPane.style.display !== 'none') { e.preventDefault(); modal.focus({ preventScroll: true }); nav(-1); }
+      if (e.key === 'ArrowRight' && imgPane.style.display !== 'none') { e.preventDefault(); modal.focus({ preventScroll: true }); nav(1); }
       if (e.key === 'Tab') {
         var focusable = Array.prototype.slice.call(modal.querySelectorAll('button:not([disabled]), iframe')).filter(function (el) { return el.offsetParent !== null; });
         if (!focusable.length) return;
