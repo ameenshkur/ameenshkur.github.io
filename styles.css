@@ -1240,7 +1240,6 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 .contact-grid { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: stretch; }
 .contact-links-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .contact-link-card { position: relative; display: flex; align-items: center; min-width: 0; min-height: 105px; gap: 14px; padding: 20px; overflow: hidden; isolation: isolate; border: 1px solid rgba(15, 83, 75, .12); border-radius: 16px; background: linear-gradient(155deg, #fff 0%, #f8fbf9 100%); box-shadow: 0 10px 30px -24px rgba(17, 74, 67, .4), inset 0 1px #fff; transition: transform .3s ease, box-shadow .3s ease; }
-.contact-link-card:first-child { grid-column: 1 / -1; min-height: 112px; }
 .contact-link-card::after, .cv-card::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; padding: 1px; pointer-events: none; background: radial-gradient(180px circle at var(--contact-x, -999px) var(--contact-y, -999px), rgba(13,148,136,.8), transparent 70%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
 .contact-link-card:hover, .contact-link-card:focus-visible { transform: translateY(-3px); box-shadow: 0 14px 30px -20px rgba(17,74,67,.35); }
 .contact-link-card:focus-visible, .cv-card a:focus-visible, .cv-card button:focus-visible { outline: 3px solid #0d9488; outline-offset: 3px; }
@@ -1273,8 +1272,7 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 }
 @media (max-width: 600px) {
   .contact-links-col { grid-template-columns: 1fr; }
-  .contact-link-card:first-child { grid-column: auto; }
-  .contact-link-card, .contact-link-card:first-child { min-height: 76px; padding: 15px; }
+  .contact-link-card { min-height: 76px; padding: 15px; }
   .cv-card { padding: 20px; }
   .cv-actions { flex-direction: column; align-items: stretch; }
   .cv-card .ai-menu-mobile-label, .ask-ai-menu-shell--contact .ai-menu-mobile-label { color: #087e70; }
