@@ -1793,3 +1793,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (window.ResizeObserver) { var observer = new ResizeObserver(schedule); slots.forEach(function (slot) { observer.observe(slot); }); }
   schedule();
 });
+
+// A soft, pointer-led highlight gives the contact cards a sense of depth.
+if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
+  document.querySelectorAll('.contact-link-card').forEach(function (card) {
+    card.addEventListener('pointermove', function (event) {
+      var bounds = card.getBoundingClientRect();
+      card.style.setProperty('--contact-x', (event.clientX - bounds.left) + 'px');
+      card.style.setProperty('--contact-y', (event.clientY - bounds.top) + 'px');
+    });
+  });
+}
