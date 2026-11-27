@@ -455,9 +455,12 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
 
 @media (min-width: 769px) {
   .ask-ai-menu-shell.is-menu-open .ask-ai-trigger { transform: translateY(0); }
-  .ask-ai-menu-shell--contact { position: relative; display: flex; align-items: center; flex: 0 1 auto; min-width: 0; max-width: 100%; }
+  .ask-ai-menu-shell--contact { position: relative; display: grid; grid-template-columns: max-content 204px; min-height: 46px; align-items: center; gap: 12px; flex: 0 1 auto; min-width: 0; max-width: 100%; }
+  .ai-quick-menu--contact { position: static; inset: auto; width: 204px; height: 46px; }
   .ai-quick-menu--contact .ai-menu-action { height: 46px; transform: translateX(-12px) scale(.8); }
   .ai-quick-menu--contact.is-open .ai-menu-action { transform: none; }
+  html[dir="rtl"] .ask-ai-menu-shell--contact { grid-template-columns: max-content 220px; }
+  html[dir="rtl"] .ai-quick-menu--contact { width: 220px; }
   html[dir="rtl"] .ai-quick-menu--contact .ai-menu-action { transform: translateX(12px) scale(.8); }
   html[dir="rtl"] .ai-quick-menu--contact.is-open .ai-menu-action { transform: none; }
 }
@@ -696,6 +699,8 @@ html[dir="rtl"] .ai-quick-menu[data-active="3"] .ai-menu-action:nth-child(2) .ai
   .cv-actions { width: 100%; flex-direction: column; align-items: stretch; }
   .cv-actions > .cv-download-btn { order: 1; width: 100%; max-width: 310px; align-self: stretch; }
   .ask-ai-menu-shell--contact { order: 2; flex: 0 0 auto; align-self: stretch; width: 100%; max-width: 310px; }
+  /* Keep the contact menu below its trigger without growing the section. */
+  .ask-ai-menu-shell--contact.is-menu-open { height: 46px; overflow: visible; }
   .cv-card .ask-ai-menu-shell--contact .ask-ai-trigger { width: 100%; }
   .ai-quick-menu, .ai-quick-menu--contact { position: absolute; inset: auto 0 auto; top: 52px; width: 100%; height: 72px; padding: 5px 14px 4px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .hero-btns > .ask-ai-menu-shell .ai-quick-menu { top: 58px; }
@@ -1251,42 +1256,36 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 .cv-card-heading { font-size: 18px; line-height: 1.25; }
 .cv-card-subtext { margin-top: 4px; color: #607b77; opacity: 1; font-size: 13px; line-height: 1.45; }
 .cv-actions { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 4px; margin: 0; }
-.cv-card .btn-white, .cv-card .btn-outline-white { position: relative; isolation: isolate; overflow: hidden; height: 44px; min-height: 44px; margin: 0; padding: 0 20px; border: 1px solid #087e70; border-radius: 999px; font-size: 13px; transition: background-color .18s ease, border-color .18s ease; }
+/* Expanding fill and moving label adapted from Magic UI Interactive Hover Button. */
+.cv-card .btn-white, .cv-card .btn-outline-white { position: relative; isolation: isolate; overflow: hidden; height: 44px; min-height: 44px; margin: 0; padding: 0 20px; border: 1px solid #087e70; border-radius: 999px; font-size: 13px; transition: color .3s ease, transform .3s ease; }
 .cv-card .btn-white { color: #fff; background: #087e70; }
 .cv-card .btn-outline-white { color: #087e70; background: transparent; }
+.cv-card .btn-white::before, .cv-card .btn-outline-white::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #075e56;
+  clip-path: circle(0 at 16px 50%);
+  transition: clip-path .32s cubic-bezier(.22,1,.36,1);
+}
+.cv-card .btn-outline-white::before { background: #d7eee6; }
 @media (hover: hover) and (pointer: fine) {
-  .cv-card .btn-white:hover { background: #075e56; border-color: #075e56; opacity: 1; transform: none; }
-  .cv-card .btn-outline-white:hover { background: #d7eee6; transform: none; }
+  .cv-card .btn-white:hover::before, .cv-card .btn-outline-white:hover::before {
+    clip-path: circle(150% at 16px 50%);
+  }
+  .cv-card .btn-white:hover { background: #087e70; opacity: 1; }
+  .cv-card .btn-outline-white:hover { background: transparent; }
 }
-
-.cv-card:has(.is-menu-open) { z-index: 3; }
-.cv-card .ai-quick-menu--contact {
-  top: auto;
-  bottom: calc(100% + 8px);
-  inset-inline: 0 auto;
-  width: min(100%, 240px);
-  height: auto;
-  min-height: 60px;
-  box-sizing: border-box;
-  align-items: center;
-  padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--white);
-  box-shadow: 0 10px 28px rgba(15,23,42,.14);
-  opacity: 0;
-  visibility: hidden;
-}
-.cv-card .ai-quick-menu--contact.is-open { opacity: 1; visibility: visible; }
-@media (max-width: 768px) {
-  .cv-card .ask-ai-menu-shell--contact.is-menu-open { height: 46px; overflow: visible; }
-  .cv-card .ai-menu-mobile-label { color: var(--teal-dark); }
-}
-.cv-card .ask-ai-trigger { overflow: hidden; }
 @media (max-width: 800px) {
   .contact-layout { grid-template-columns: 1fr; gap: 28px; }
   .contact-intro { padding-top: 0; }
   .contact-signature { margin-top: 20px; }
+}
+@media (max-width: 768px) {
+  #contact { padding-block-end: 80px; }
+  #contact .ai-menu-mobile-label { color: var(--teal-dark); }
 }
 @media (max-width: 600px) {
   .contact-links-col { grid-template-columns: 1fr; }
@@ -1296,6 +1295,6 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
   .cv-card .ai-menu-mobile-label, .ask-ai-menu-shell--contact .ai-menu-mobile-label { color: #087e70; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .contact-link-card, .cv-card .btn-white, .cv-card .btn-outline-white { transition: none; }
-  .contact-link-card:hover { transform: none; }
+  .contact-link-card, .cv-card .btn-white, .cv-card .btn-outline-white, .cv-card .btn-white::before, .cv-card .btn-outline-white::before { transition: none; }
+  .contact-link-card:hover, .cv-card .btn-white:hover, .cv-card .btn-outline-white:hover { transform: none; }
 }
