@@ -949,6 +949,9 @@ body.share-page-open > .nav-backdrop { display: none; }
 
 /* Lenis controls wheel scrolling while native scrolling remains the fallback. */
 html.lenis, html.lenis body { height: auto; }
+/* Keep the page scrollbar on the inline end of the current language. */
+html, html.lenis { height: 100%; overflow: hidden; }
+body, html.lenis body { height: 100%; overflow-y: auto; overflow-x: hidden; }
 html.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -1120,10 +1123,13 @@ html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { margin: 0 -24px
 
 /* Use the custom slim scrollbar in Chromium and WebKit without end buttons. */
 @supports selector(::-webkit-scrollbar) {
-  #portfolio .campaign-card[open] .campaign-list { scrollbar-width: auto; scrollbar-color: auto; }
+  #portfolio .campaign-card[open] .campaign-list,
+  html[dir="rtl"] #portfolio .campaign-card[open] .campaign-list { scrollbar-width: auto; scrollbar-color: auto; }
 }
 #portfolio .campaign-list::-webkit-scrollbar { width: 5px; }
-#portfolio .campaign-list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+#portfolio .campaign-list::-webkit-scrollbar-button,
+#portfolio .campaign-list::-webkit-scrollbar-button:vertical:start:decrement,
+#portfolio .campaign-list::-webkit-scrollbar-button:vertical:end:increment { display: none; width: 0; height: 0; }
 
 /* Featured projects: a page-scrolling stack inspired by React Bits ScrollStack. */
 #featured .featured-grid { display: block; margin: 0; }

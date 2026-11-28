@@ -6,7 +6,7 @@ var portfolioLenis = null;
   function updateScrolling() {
     if (portfolioLenis) { portfolioLenis.destroy(); portfolioLenis = null; }
     if (!motion.matches) {
-      portfolioLenis = new Lenis({ autoRaf: true, anchors: true, allowNestedScroll: true,
+      portfolioLenis = new Lenis({ wrapper: document.body, content: document.body, autoRaf: true, anchors: true, allowNestedScroll: true,
         prevent: function () { return document.body.style.overflow === 'hidden'; } });
     }
   }
@@ -1554,7 +1554,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (section.getBoundingClientRect().top <= marker) current = section;
       });
 
-      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      if (document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight - 2) {
         current = sections[sections.length - 1];
       }
 
@@ -1568,7 +1568,7 @@ document.addEventListener('DOMContentLoaded', function () {
       window.requestAnimationFrame(updateActiveSection);
     }
 
-    window.addEventListener('scroll', requestUpdate, { passive: true });
+    document.body.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
     updateActiveSection();
   });
@@ -1786,7 +1786,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   function schedule() { if (!pending) pending = requestAnimationFrame(update); }
-  window.addEventListener('scroll', schedule, { passive: true });
+  document.body.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
   grid.addEventListener('click', schedule);
   enabled.addEventListener('change', schedule);
