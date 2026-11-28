@@ -1379,3 +1379,10 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
   #hero .hero-btns > .ask-ai-menu-shell .ask-ai-trigger { height: 52px; min-height: 52px; }
   #hero .hero-btns > .ask-ai-menu-shell.is-menu-open { height: 130px; }
 }
+
+/* Mobile scrolling should not reserve a custom scrollbar gutter. */
+@media (max-width: 768px) {
+  body, html.lenis body { width: 100%; max-width: 100%; scrollbar-width: none; }
+  body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  #hero { width: 100%; max-width: 100%; }
+}
