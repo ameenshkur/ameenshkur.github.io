@@ -1284,10 +1284,12 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
   .contact-signature { margin-top: 20px; }
 }
 @media (max-width: 768px) {
-  #contact { padding-block-end: 80px; }
+  /* Give the contact section its own paint layer on mobile browsers. */
+  #contact { padding-block-end: 80px; transform: translateZ(0); }
+  nav { background: #fafaf8; backdrop-filter: none; -webkit-backdrop-filter: none; }
   /* Avoid mobile compositing artifacts while scrolling masked, transformed cards. */
   #contact .contact-link-card::after, #contact .cv-card::after { display: none; }
-  #contact .contact-link-card.reveal { opacity: 1; transform: none; transition: none; }
+  #contact .reveal { opacity: 1; transform: none; transition: none; }
   #contact .ai-menu-mobile-label { color: var(--teal-dark); }
 }
 @media (max-width: 600px) {
