@@ -1365,3 +1365,17 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {
   #hero .hero-btns .btn-primary::after, #hero .hero-btns .btn-secondary::after, #hero .hero-btns .btn-ai::after { transition: none; }
 }
+
+/* Keep the animated hero contained and centered on phone screens. */
+@media (max-width: 768px) {
+  #hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    align-items: center;
+    padding: 88px 16px 48px;
+  }
+  #hero .hero-inner { width: 100%; max-width: 100%; }
+  #hero .hero-btns > .ask-ai-menu-shell,
+  #hero .hero-btns > .ask-ai-menu-shell .ask-ai-trigger { height: 52px; min-height: 52px; }
+  #hero .hero-btns > .ask-ai-menu-shell.is-menu-open { height: 130px; }
+}

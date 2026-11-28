@@ -375,6 +375,7 @@ const wakeRef = { current: null };
     };
 
     const onPointerMove = event => {
+      if (event.pointerType === 'touch' || window.matchMedia('(max-width: 768px)').matches) return;
       const s = settingsRef.current;
       const { x, y } = locate(event);
       const inside = x >= 0 && x <= 1 && y >= 0 && y <= 1;
@@ -394,6 +395,7 @@ const wakeRef = { current: null };
     };
 
     const onPointerDown = event => {
+      if (event.pointerType === 'touch' || window.matchMedia('(max-width: 768px)').matches) return;
       const s = settingsRef.current;
       if (!s.clickSwirl || reduce) return;
       const { x, y } = locate(event);
