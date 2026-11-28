@@ -95,6 +95,9 @@ void main() {
   col *= uBrightness;
   col += (hash(gl_FragCoord.xy + uSeed) - 0.5) * uGrain * 0.12;
   col = clamp(col, 0.0, 1.0);
+  // Re-map the folds to the site's off-white and glass-teal palette.
+  float tone = dot(col, vec3(0.2126, 0.7152, 0.0722));
+  col = mix(vec3(0.64, 0.84, 0.82), vec3(0.98, 0.98, 0.97), smoothstep(0.35, 1.0, tone));
 
   float alpha = uOpacity;
   if (uFade > 0.0) {

@@ -1336,3 +1336,32 @@ html[dir="rtl"] #featured .featured-title { letter-spacing: 0; }
 @media (prefers-reduced-motion: reduce) {
   #hero .hero-btns .btn-primary, #hero .hero-btns .btn-secondary, #hero .hero-btns .btn-ai { transition: none; }
 }
+
+/* Keep the hero in the same off-white, navy and teal palette as the site. */
+#hero { background: var(--bg); }
+#hero::before { background: radial-gradient(ellipse at 50% 42%, rgba(250,250,248,.82), rgba(250,250,248,.38) 75%); }
+#hero::after { background: linear-gradient(180deg, rgba(250,250,248,.35), transparent 36%, var(--bg)); }
+#hero .hero-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(100%, 900px); max-width: none; gap: 0; border-top-color: rgba(15,118,110,.18); }
+#hero .stat-item, #hero .stat-item:first-child { min-width: 0; padding: 0 22px; border: 0; border-inline-end: 1px solid rgba(15,118,110,.18); }
+#hero .stat-item:last-child { border-inline-end: 0; }
+#hero .stat-value { line-height: 1.5; }
+/* A restrained version of React Bits' Glare Hover treatment. */
+#hero .hero-btns .btn-primary, #hero .hero-btns .btn-secondary, #hero .hero-btns .btn-ai { position: relative; isolation: isolate; overflow: hidden; border-radius: 14px; min-height: 56px; }
+#hero .hero-btns .btn-primary { background: var(--teal); box-shadow: 0 6px 16px rgba(13,148,136,.18); }
+#hero .hero-btns .btn-ai, #hero .hero-btns .btn-secondary { background: rgba(255,255,255,.85); border: 1px solid rgba(15,118,110,.24); }
+#hero .hero-btns .btn-primary::after, #hero .hero-btns .btn-secondary::after, #hero .hero-btns .btn-ai::after { content: ''; position: absolute; z-index: 3; inset: -50% -35%; pointer-events: none; background: linear-gradient(110deg, transparent 38%, rgba(255,255,255,.46) 50%, transparent 62%); transform: translateX(-130%); transition: transform .65s cubic-bezier(.22,1,.36,1); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #hero .hero-btns .btn-primary:hover::after, #hero .hero-btns .btn-secondary:hover::after, #hero .hero-btns .btn-ai:hover::after { transform: translateX(130%); }
+  #hero .hero-btns .btn-primary:hover { background: var(--teal-dark); }
+  #hero .hero-btns .btn-secondary:hover, #hero .hero-btns .btn-ai:hover { background: #fff; border-color: var(--teal); }
+}
+@media (max-width: 640px) {
+  #hero::before { background: radial-gradient(ellipse at 50% 38%, rgba(250,250,248,.88), rgba(250,250,248,.45) 85%); }
+  #hero .hero-btns .btn-primary, #hero .hero-btns .btn-secondary, #hero .hero-btns .btn-ai { min-height: 52px; }
+  #hero .hero-stats { width: min(100%, 320px); grid-template-columns: 1fr; gap: 0; padding-top: 16px; }
+  #hero .stat-item, #hero .stat-item:first-child { min-height: 0; padding: 10px 4px; border: 0; border-bottom: 1px solid rgba(15,118,110,.13); border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; }
+  #hero .stat-item:last-child { grid-column: auto; border-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #hero .hero-btns .btn-primary::after, #hero .hero-btns .btn-secondary::after, #hero .hero-btns .btn-ai::after { transition: none; }
+}
